@@ -70,7 +70,7 @@ const Peoducts = () => {
                         })}
                     </div>
                 </div>
-                <div className="flex-1 flex flex-wrap gap-4">
+                <div className="flex-1 flex flex-wrap gap-4 justify-center">
                     <Card arr={productData} size="lg" />
                 </div>
             </div>

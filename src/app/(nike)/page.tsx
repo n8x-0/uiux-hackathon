@@ -6,20 +6,20 @@ import Intro from "@/components/homepage/intro";
 import Link from "next/link";
 
 const intro = {
-  image: "/home/intro.png",
+  image: "/home/intro.webp",
   span: "First Look",
   title: "NIKE AIR MAX PULSE",
   para: "Extreme comfort. Hyper durable. Max volume. Introducing the Air Max Pulse designed to push you past your limits and help you go to the max."
 }
 
 const featuredArr = {
-  image: "/home/featuredpage.png",
+  image: "/home/featuredpage.webp",
   title: "STEP INTO WHAT FEELS GOOD",
   para: "Cause everyone should know the feeling of running in that perfect pair."
 }
 
 const dontMisspage = {
-  image: "/home/dontmiss.png",
+  image: "/home/dontmiss.webp",
   title: "FLIGHT ESSENTIALS",
   para: "Your built-to-last, all-week wears—but with style only Jordan Brand can deliver."
 }

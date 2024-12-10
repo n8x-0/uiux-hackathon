@@ -4,6 +4,7 @@ import { HiShoppingCart } from "react-icons/hi2";
 import Listroutes from "./listroutes"
 import Link from "next/link"
 import { FaLocationDot } from "react-icons/fa6";
+import Listtoggle from "./listtoggle";
 
 const routes = [
     {
@@ -40,14 +41,12 @@ const Header2 = () => {
 
             <div className="w-full sm:py-4 sm:px-10 px-2 py-2 flex justify-between items-center border-b m-auto relative">
                 <div className="w-14 h-10 xl:mr-40">
-                    <Image src={"/snkrs.png"} alt="" width={600} height={600} className="w-full h-full object-contain" />
+                    <Image src={"/snkrs.webp"} alt="" width={600} height={600} className="w-full h-full object-contain" />
                 </div>
                 <div className="gap-6 items-center font-medium text-sm lg:flex hidden">
                     <Listroutes routes={routes} />
                 </div>
-                <div className="w-6 h-6">
-                    <Image src={"/icons/snkrlisticon.png"} alt="" width={600} height={600} className="w-full h-full object-contain" />
-                </div>
+                <Listtoggle icon="window"/>
             </div>
         </>
     )

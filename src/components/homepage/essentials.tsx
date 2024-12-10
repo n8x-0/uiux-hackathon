@@ -4,15 +4,15 @@ import Link from "next/link"
 const data = [
     {
         category: "Mens's",
-        image: "/home/essentials/image1.png"
+        image: "/home/essentials/image1.webp"
     },
     {
         category: "Womens's",
-        image: "/home/essentials/image2.png"
+        image: "/home/essentials/image2.webp"
     },
     {
         category: "Kid's",
-        image: "/home/essentials/image3.png"
+        image: "/home/essentials/image3.webp"
     },
 ]
 const Essentials = () => {

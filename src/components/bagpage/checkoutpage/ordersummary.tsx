@@ -2,7 +2,7 @@ import Image from "next/image"
 
 const data = [
     {
-        image: "/products/clothes/neela.png",
+        image: "/products/clothes/neela.webp",
         title: "Nike Dri-FIT Ready",
         category: "Men's Short-Sleeve Fitness Top",
         colours: 3,
@@ -10,7 +10,7 @@ const data = [
         id: 4
     },
     {
-        image: "/products/clothes/boxer.png",
+        image: "/products/clothes/boxer.webp",
         title: "Nike One Leak Protection: Period",
         category: "Women's Mid-Rise 18cm (approx.) Biker Shorts",
         colours: 2,

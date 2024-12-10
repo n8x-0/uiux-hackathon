@@ -9,7 +9,7 @@ export interface Product {
 
 export const productData: Product[] = [
     {
-        image: "/products/shoes/shoe1.png",
+        image: "/products/shoes/shoe1.webp",
         title: "Nike Air Max Pulse",
         category: "Women's Shoes",
         colours: 2,
@@ -17,7 +17,7 @@ export const productData: Product[] = [
         id: 1
     },
     {
-        image: "/products/shoes/shoe2.png",
+        image: "/products/shoes/shoe2.webp",
         title: "Nike Air Max 97 SE",
         category: "Men's Shoes",
         colours: 2,
@@ -25,7 +25,7 @@ export const productData: Product[] = [
         id: 2
     },
     {
-        image: "/products/shoes/jordan.png",
+        image: "/products/shoes/jordan.webp",
         title: "Air Jordan XXXVII Low PF",
         category: "Men's Basketball Shoes",
         colours: 1,
@@ -33,7 +33,7 @@ export const productData: Product[] = [
         id: 3
     },
     {
-        image: "/products/clothes/neela.png",
+        image: "/products/clothes/neela.webp",
         title: "Nike Dri-FIT Ready",
         category: "Men's Short-Sleeve Fitness Top",
         colours: 3,
@@ -41,7 +41,7 @@ export const productData: Product[] = [
         id: 4
     },
     {
-        image: "/products/clothes/boxer.png",
+        image: "/products/clothes/boxer.webp",
         title: "Nike One Leak Protection: Period",
         category: "Women's Mid-Rise 18cm (approx.) Biker Shorts",
         colours: 2,
@@ -49,7 +49,7 @@ export const productData: Product[] = [
         id: 5
     },
     {
-        image: "/products/shoes/wildhorse.png",
+        image: "/products/shoes/wildhorse.webp",
         title: "Nike Wildhorse 8",
         category: "Women's Trail Running Shoes",
         colours: 2,
@@ -57,7 +57,7 @@ export const productData: Product[] = [
         id: 6
     },
     {
-        image: "/products/clothes/kalu.png",
+        image: "/products/clothes/kalu.webp",
         title: "Nike Sportswear",
         category: "Women's Ribbed Jersey Short-Sleeve Top",
         colours: 2,

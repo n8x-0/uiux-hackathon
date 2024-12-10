@@ -6,25 +6,25 @@ const jobdata = [
         title: "Korea - Distribution Center (Customer Service Center) Operations Associate (Icheon)",
         type: "Supply Chain, Distribution & Logistics",
         location: "Icheon, South Korea",
-        image: "/internship/image1.png"
+        image: "/internship/image1.webp"
     },
     {
         title: "Korea - Distribution Center (Customer Service Center) Operations Associate (Icheon)",
         type: "Supply Chain, Distribution & Logistics",
         location: "Icheon, South Korea",
-        image: "/internship/image2.png"
+        image: "/internship/image2.webp"
     },
     {
         title: "Infrastructure and End User Support Specialist",
         type: "Technology",
         location: "Icheon, South Korea",
-        image: "/internship/image3.png"
+        image: "/internship/image3.webp"
     },
     {
         title: "Korea - Distribution Center (Customer Service Center) Operations Associate (Icheon)",
         type: "Supply Chain, Distribution & Logistics",
         location: "Icheon, South Korea",
-        image: "/internship/image4.png"
+        image: "/internship/image4.webp"
     },
 ]
 
@@ -44,16 +44,16 @@ const JobListSection = () => {
                                 </div>
                                 <div className="md:max-w-full max-w-64">
                                     <div className="w-10 h-8">
-                                        <Image src={"/logo.png"} alt="" width={600} height={600} className="w-full h-full object-contain" />
+                                        <Image src={"/logo.webp"} alt="" width={600} height={600} className="w-full h-full object-contain" />
                                     </div>
-                                    <h1 className="md:text-2xl sm:text-lg text-sm font-medium tracking-tighter">{data.title}</h1>
+                                    <h1 className="lg:text-2xl sm:text-lg text-sm font-medium tracking-tighter">{data.title}</h1>
                                     <p className="text-sm text-[#575757] font-medium">{data.type}</p>
                                     <span className="text-xs text-[#575757]">{data.location}</span>
                                 </div>
                             </div>
                             <div className="w-12 flex flex-col gap-1">
-                                <div className="w-12 h-12 bg-[#191919]"></div>
-                                <div className="w-12 h-12 bg-[#191919]"></div>
+                                <div className="lg:w-12 lg:h-12 md:w-8 md:h-8 w-6 h-6 bg-[#191919]"></div>
+                                <div className="lg:w-12 lg:h-12 md:w-8 md:h-8 w-6 h-6 bg-[#191919]"></div>
                             </div>
                         </div>
                     )

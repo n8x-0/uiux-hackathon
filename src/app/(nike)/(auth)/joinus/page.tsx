@@ -6,7 +6,7 @@ const JoinUs = () => {
         <div className="w-full flex justify-center items-center min-h-[80vh] p-3 text-[#8D8D8D]">
             <div className="sm:w-[400px] w-full flex justify-center items-center flex-col sm:gap-6 gap-4">
                 <div className="w-14 h-10">
-                    <Image src={"/logo.png"} alt="" width={600} height={600} className="w-full h-full object-contain" />
+                    <Image src={"/logo.webp"} alt="" width={600} height={600} className="w-full h-full object-contain" />
                 </div>
                 <h1 className="sm:text-4xl text-3xl font-medium text-center px-2 text-[#111]">BECOME A NIKE MEMBER</h1>
                 <p className="text-center sm:text-sm text-xs">

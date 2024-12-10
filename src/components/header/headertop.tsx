@@ -5,7 +5,7 @@ const Headertop = () => {
     return (
         <div className="w-full sm:px-10 px-2 py-2 bg-[#F5F5F5] flex justify-between items-center">
             <div className="w-6 h-6">
-                <Image src={"/logo2.png"} alt="" width={600} height={600} className="w-full h-full object-contain" />
+                <Image src={"/logo2.webp"} alt="" width={600} height={600} className="w-full h-full object-contain" />
             </div>
             <div className="flex justify-center items-center gap-4 text-xs font-medium">   
                 <Link href={"/"}>Find a Store</Link> | 
