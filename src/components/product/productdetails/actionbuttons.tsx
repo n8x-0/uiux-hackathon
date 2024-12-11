@@ -5,7 +5,7 @@ const Actionbuttons = ({ id }: { id: number }) => {
     const [alredyExistBag, setAlredyExistBag] = useState<string | null>(null);
     const [alredyExistFav, setAlredyExistFav] = useState<string | null>(null);
 
-    let existingItems = useRef<number[]>([])
+    const existingItems = useRef<number[]>([])
     useEffect(() => {
         const existingBagItems = localStorage.getItem("bagitems")
         const existingFavItems = localStorage.getItem("favitems")
