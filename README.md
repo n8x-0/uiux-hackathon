@@ -12,11 +12,10 @@ pages included:
 /bag/checkout (go to the cart or fav and click memeber checkout button)<br/>
 /products (nav {new & featured}) || (other buttons are for category filter, functionality isnt implemented)<br/>
 / prod details dynamic route (click any product any where) <br/>
+/ prod by category dynamic
 <br/>
 Extra pages:<br/>
 
 / dynamic page with another layout (click SNKRES from navbar)<br/>
 /internship (link is in the footer)<br/>
 /membership (link is in the footer)<br/>
-<br/>
-damn that's 11,

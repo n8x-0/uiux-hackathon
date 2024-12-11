@@ -1,4 +1,5 @@
 import Bestofairmax from '@/components/homepage/bestofairmax';
+import Actionbuttons from '@/components/product/productdetails/actionbuttons';
 import { productData } from '@/utils/product';
 import Image from 'next/image';
 import React from 'react'
@@ -48,10 +49,7 @@ const PorductDetail = ({ params }: { params: { prodid: number } }) => {
                                         )
                                     })}
                             </div>
-                            <div className='text-sm space-y-2'>
-                                <button className='w-full bg-[#111] py-4 text-white rounded-full'>Add to bag</button>
-                                <button className='w-full border py-4 rounded-full'>Favorites</button>
-                            </div>
+                            <Actionbuttons id={prod.id}/>
                         </div>
                         <div>
                             <p className='pt-6 text-sm text-[#111] leading-7'>

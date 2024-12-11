@@ -28,3 +28,35 @@
     -webkit-backdrop-filter: blur(10.3px);
     border: 1px solid rgba(255, 255, 255, 0.29);
 }
+
+.anim{
+    animation: abc 2.1s ease-out;
+}
+
+@keyframes abc{
+    0%{
+        transform: scale(0);
+        opacity: 0;
+    }15%{
+        opacity: 1;
+        transform: scale(1);
+    }85%{
+        opacity: 1;
+        transform: scale(1);
+    }100%{
+        opacity: 0;
+        transform: scale(0);
+    }
+}
+.animLinear{
+    animation: scale 0.2s ease-out;
+}
+@keyframes scale{
+    0%{
+        transform: scale(0);
+        opacity: 0;
+    }100%{
+        opacity: 1;
+        transform: scale(1);
+    } 
+}

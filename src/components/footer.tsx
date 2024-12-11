@@ -51,7 +51,7 @@ const Footer = () => {
                         <Link href="/" className="hover:opacity-75">
                             <FaFacebook />
                         </Link>
-                        <Link href="/" className="hover:opacity-75">
+                        <Link href="https://www.youtube.com/@n8xeditz561" className="hover:opacity-75">
                             <FaYoutube />
                         </Link>
                         <Link href="/" className="hover:opacity-75">
