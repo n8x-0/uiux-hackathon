@@ -7,9 +7,9 @@ import Proceedcheckout from "./proceedcheckout"
 
 const Bagitems = () => {
 
-    const [total , setTotal] = useState<number>(0)
+    const [total , setTotal] = useState<number | undefined>(0)
     const data = useContext(storage);
-
+    
     return (
         <>
         <div className="flex-1 md:p-2">

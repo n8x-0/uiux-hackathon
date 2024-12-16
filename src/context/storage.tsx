@@ -17,23 +17,23 @@ const StorageProvider = ({ children }: { children: React.ReactNode }) => {
 
     useEffect(() => {
         if (favitems === null && typeof window !== "undefined") {
-            const storedFavs = localStorage.getItem("favitems");
-            setFavitems(storedFavs ? JSON.parse(storedFavs) : []);
+            const storedFavs = JSON.parse(localStorage.getItem("favitems") as string);
+            setFavitems(storedFavs && storedFavs.length > 0 ? storedFavs : null);
         }
 
         if (bagitems === null && typeof window !== "undefined") {
-            const storedBags = localStorage.getItem("bagitems");
-            setBagitems(storedBags ? JSON.parse(storedBags) : []);
+            const storedBags = JSON.parse(localStorage.getItem("bagitems") as string);
+            setBagitems(storedBags && storedBags.length > 0 ? storedBags : null);
         }
     }, [favitems, bagitems]);
     useEffect(() => {
-        if (typeof window !== "undefined" && favitems !== null) {
+        if (favitems !== null) {
             localStorage.setItem("favitems", JSON.stringify(favitems));
         }
     }, [favitems]);
     
     useEffect(() => {
-        if (typeof window !== "undefined" && bagitems !== null) {
+        if (bagitems !== null) {
             localStorage.setItem("bagitems", JSON.stringify(bagitems));
         }
     }, [bagitems]);

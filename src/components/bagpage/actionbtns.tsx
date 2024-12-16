@@ -8,13 +8,13 @@ import { FiHeart } from "react-icons/fi";
 
 const Actionbtns = ({ id, storagename }: { id: number, storagename: string }) => {
     const data = useContext(storage)
-    const [LikedItems, setLiked] = useState<boolean>(false)
+    const [LikedItems, setLiked] = useState<boolean>()
 
     useEffect(() => {
         const favorites = data?.get("favitems")
         const liked = favorites?.includes(id) as boolean
         setLiked(liked)
-    }, [data])
+    }, [data,id])
 
     return (
 
@@ -23,9 +23,11 @@ const Actionbtns = ({ id, storagename }: { id: number, storagename: string }) =>
                 try {
                     data?.set(id, "favitems")
                     setLiked(true)
-                } catch {
-                    data?.delete(id, "favitems")
-                    setLiked(false)
+                } catch (err) {
+                    if (err) {
+                        data?.delete(id, "favitems")
+                        setLiked(false)
+                    }
                 }
             }} />}
             <AiOutlineDelete onClick={() => data?.delete(id, storagename)} />
