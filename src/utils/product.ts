@@ -4,7 +4,7 @@ export interface Product {
     category: string;
     colours: number;
     categorySearch: string,
-    price: string;
+    price: number;
     id: number
 }
 
@@ -15,7 +15,7 @@ export const productData: Product[] = [
         category: "Women's Shoes",
         categorySearch: "kids",
         colours: 2,
-        price: "13,995",
+        price: 13995,
         id: 1
     },
     {
@@ -24,7 +24,7 @@ export const productData: Product[] = [
         category: "Men's Shoes",
         categorySearch: "women",
         colours: 2,
-        price: "16,995",
+        price: 16995,
         id: 2
     },
     {
@@ -33,7 +33,7 @@ export const productData: Product[] = [
         category: "Men's Basketball Shoes",
         categorySearch: "men",
         colours: 1,
-        price: "16,295",
+        price: 16295,
         id: 3
     },
     {
@@ -42,7 +42,7 @@ export const productData: Product[] = [
         category: "Men's Short-Sleeve Fitness Top",
         categorySearch: "men",
         colours: 3,
-        price: "2,495",
+        price: 2495,
         id: 4
     },
     {
@@ -51,7 +51,7 @@ export const productData: Product[] = [
         category: "Women's Mid-Rise 18cm (approx.) Biker Shorts",
         categorySearch: "women",
         colours: 2,
-        price: "3,395",
+        price: 3395,
         id: 5
     },
     {
@@ -60,7 +60,7 @@ export const productData: Product[] = [
         category: "Women's Trail Running Shoes",
         categorySearch: "men",
         colours: 2,
-        price: "11,895",
+        price: 11895,
         id: 6
     },
     {
@@ -69,7 +69,7 @@ export const productData: Product[] = [
         category: "Women's Ribbed Jersey Short-Sleeve Top",
         categorySearch: "women",
         colours: 2,
-        price: "3,295",
+        price: 3295,
         id: 7
     },
     {
@@ -78,7 +78,7 @@ export const productData: Product[] = [
         category: "Older Kids' Oversized Woven Jacket",
         categorySearch: "kids",
         colours: 1,
-        price: "3,295",
+        price: 3295,
         id: 8
     },
 ]

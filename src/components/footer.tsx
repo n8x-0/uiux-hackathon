@@ -6,7 +6,6 @@ const Footer = () => {
     return (
         <footer className="bg-[#111] text-[#7E7E7E] text-sm pt-10">
             <div className="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8">
-                {/* Column 1 */}
                 <div>
                     <h3 className="font-semibold mb-4 text-[#FFFFFF]">FIND A STORE</h3>
                     <ul className="space-y-4 text-[#FFFFFF]">
@@ -17,8 +16,6 @@ const Footer = () => {
                         <li><Link href="/internship" className="hover:underline">INTERNSHIPS</Link></li>
                     </ul>
                 </div>
-
-                {/* Column 2 */}
                 <div>
                     <h3 className="font-semibold mb-4 text-[#FFFFFF]">GET HELP</h3>
                     <ul className="space-y-4">
@@ -30,8 +27,6 @@ const Footer = () => {
                         <li><Link href="/" className="hover:underline">Contact Us On All Other Inquiries</Link></li>
                     </ul>
                 </div>
-
-                {/* Column 3 */}
                 <div>
                     <h3 className="font-semibold mb-4 text-[#FFFFFF]">ABOUT NIKE</h3>
                     <ul className="space-y-4">
@@ -41,8 +36,6 @@ const Footer = () => {
                         <li><Link href="/" className="hover:underline">Sustainability</Link></li>
                     </ul>
                 </div>
-
-                {/* Social Icons */}
                 <div className="flex flex-col md:items-end space-y-5 text-2xl">
                     <div className="flex space-x-4">
                         <Link href="/" className="hover:opacity-75">

@@ -8,7 +8,7 @@ const womens = [
         category: "Women's Mid-Rise 18cm (approx.) Biker Shorts",
         categorySearch: "women",
         colours: 2,
-        price: "3,395",
+        price: 3395,
         id: 5
     },
     {
@@ -17,7 +17,7 @@ const womens = [
         category: "Women's Ribbed Jersey Short-Sleeve Top",
         categorySearch: "women",
         colours: 2,
-        price: "3,295",
+        price: 3295,
         id: 7
     },
     {
@@ -26,7 +26,7 @@ const womens = [
         category: "Women's Shoes",
         categorySearch: "kids",
         colours: 2,
-        price: "13,995",
+        price: 13995,
         id: 1
     },
 ]
@@ -38,7 +38,7 @@ const mens = [
         category: "Men's Shoes",
         categorySearch: "women",
         colours: 2,
-        price: "16,995",
+        price: 16995,
         id: 2
     },
     {
@@ -47,7 +47,7 @@ const mens = [
         category: "Men's Basketball Shoes",
         categorySearch: "men",
         colours: 1,
-        price: "16,295",
+        price: 16295,
         id: 3
     },
     {
@@ -56,7 +56,7 @@ const mens = [
         category: "Men's Short-Sleeve Fitness Top",
         categorySearch: "men",
         colours: 3,
-        price: "2,495",
+        price: 2495,
         id: 4
     },
 ]

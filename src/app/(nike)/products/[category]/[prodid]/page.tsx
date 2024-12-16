@@ -1,5 +1,6 @@
 import Bestofairmax from '@/components/homepage/bestofairmax';
 import Actionbuttons from '@/components/product/productdetails/actionbuttons';
+import StorageProvider from '@/context/storage';
 import { productData } from '@/utils/product';
 import Image from 'next/image';
 import React from 'react'
@@ -49,21 +50,23 @@ const PorductDetail = ({ params }: { params: { prodid: number } }) => {
                                         )
                                     })}
                             </div>
-                            <Actionbuttons id={prod.id}/>
+                            <StorageProvider>
+                                <Actionbuttons id={prod.id} />
+                            </StorageProvider>
                         </div>
                         <div>
                             <p className='pt-6 text-sm text-[#111] leading-7'>
                                 Layer on style with the Air Max 97. The cracked leather and soft suede update the iconic design while the original look (inspired by Japanese bullet trains and water droplets) still takes centre stage. Easy-to-style colours let you hit the stxreets quickly.
                             </p>
                             <div className='p-8 text-[#111] '>
-                                Colour Shown: Flat Pewter/Light<br/> Bone/Black/White
+                                Colour Shown: Flat Pewter/Light<br /> Bone/Black/White
                                 <div>Style: DV7421-001</div>
                             </div>
                             <span className='underline underline-offset-4 font-medium'>view Product details</span>
                         </div>
                     </div>
                 </div>
-                <Bestofairmax introTitle="You might also like" cardSize="lg"/>
+                <Bestofairmax introTitle="You might also like" cardSize="lg" />
             </div>
         )
 }
