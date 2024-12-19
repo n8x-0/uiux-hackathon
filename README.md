@@ -2,6 +2,12 @@ to visit <a href="https://uiux-hackathon-pink.vercel.app/">click here</a>
 
 Note: super confused because two figma files were circulating, I got one with 18 pages while others with around 5 - 6 pages. I didn't get sir Ameen reply so I left other extra pages realizing I had completed those 5-6 pages in jsut 10 hours.
 
+responsive ✅
+add to fav ✅
+add to bag ✅
+delete from bag and fav ✅
+total price summary ✅
+
 pages included:
 
 / (home {click the nike logo})<br/> 

@@ -8,13 +8,17 @@ import { FiHeart } from "react-icons/fi";
 
 const Actionbtns = ({ id, storagename }: { id: number, storagename: string }) => {
     const data = useContext(storage)
-    const [LikedItems, setLiked] = useState<boolean>()
+    const [LikedItems, setLiked] = useState<boolean>(false)
 
     useEffect(() => {
+        likeHandler()
+    }, [])
+    
+    const likeHandler = () => {
         const favorites = data?.get("favitems")
         const liked = favorites?.includes(id) as boolean
         setLiked(liked)
-    }, [data,id])
+    }
 
     return (
 
