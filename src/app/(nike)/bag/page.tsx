@@ -1,6 +1,5 @@
 import Bestofairmax from "@/components/homepage/bestofairmax";
 import Bagitems from "@/components/bagpage/bagitems";
-// import Proceedcheckout from "@/components/bagpage/proceedcheckout";
 import StorageProvider from "@/context/storage";
 
 
@@ -13,7 +12,6 @@ const BagPage = () => {
         <StorageProvider>
           <Bagitems />
         </StorageProvider>
-        {/* <Proceedcheckout /> */}
       </div>
       <Bestofairmax introTitle="You might also like" cardSize="lg" />
     </div>

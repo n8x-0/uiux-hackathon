@@ -1,19 +1,13 @@
-"use client";
+ "use client";
 
 import React, { useState, useEffect } from "react";
 import { storage } from "./context";
+import { ContextIface } from "./context";
 
-interface ContextIface {
-    favitems: number[] | null;
-    bagitems: number[] | null;
-    set: (value: number, storagename: string) => void;
-    delete: (value: number | number[], storagename: string) => void;
-    get: (storagename: string) => number[] | null;
-}
 
 const StorageProvider = ({ children }: { children: React.ReactNode }) => {
-    const [favitems, setFavitems] = useState<number[] | null>(null);
-    const [bagitems, setBagitems] = useState<number[] | null>(null);
+    const [favitems, setFavitems] = useState<string[] | null>(null);
+    const [bagitems, setBagitems] = useState<string[] | null>(null);
 
     useEffect(() => {
         if (favitems === null && typeof window !== "undefined") {

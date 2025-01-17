@@ -6,7 +6,7 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { FiHeart } from "react-icons/fi";
 
 
-const Actionbtns = ({ id, storagename }: { id: number, storagename: string }) => {
+const Actionbtns = ({ id, storagename }: { id: string, storagename: string }) => {
     const data = useContext(storage)
     const [LikedItems, setLiked] = useState<boolean>(false)
 

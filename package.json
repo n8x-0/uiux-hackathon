@@ -9,10 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@sanity/vision": "^3.68.3",
     "next": "14.2.19",
+    "next-sanity": "^9.8.30",
     "react": "^18",
     "react-dom": "^18",
-    "react-icons": "^5.4.0"
+    "react-icons": "^5.4.0",
+    "sanity": "^3.68.3"
   },
   "devDependencies": {
     "@types/node": "^20",

@@ -1,15 +1,17 @@
 import Card from "@/components/card"
-import { productData } from "@/utils/product"
 import { VscSettings } from "react-icons/vsc";
 import { IoIosArrowDown } from "react-icons/io";
 import Link from "next/link";
+import { GetProductData } from "@/sanity/sanity.query";
 
 const navData = [
     "Shoes", "Sports Bras", "Tops & T-Shirts", "Hoodies & Sweatshirts"
     , "Jackets", "Trousers & Tights", "Shorts", "Tracksuits", "Jumpsuits & Rompers",
     "Skirts & Dresses", "Socks", "Accessories & Equipment"
 ]
-const Peoducts = () => {
+const Peoducts = async () => {
+    const productData = await GetProductData();
+    
     return (
         <div className="md:px-12 px-3 py-3">
             <div className="w-full flex justify-between items-center py-6">

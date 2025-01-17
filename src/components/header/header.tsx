@@ -14,15 +14,15 @@ const routes = [
     },
     {
         name: "Men",
-        route: "/products/men"
+        route: "/products/men's"
     },
     {
         name: "Women",
-        route: "/products/women"
+        route: "/products/women's"
     },
     {
         name: "Kids",
-        route: "/products/kids"
+        route: "/products/kid's"
     },
     {
         name: "Sale",

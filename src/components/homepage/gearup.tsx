@@ -1,67 +1,11 @@
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs"
 import Card from "../card"
+import { GetProductByCategory } from "@/sanity/sanity.query"
 
-const womens = [
-    {
-        image: "/products/clothes/boxer.webp",
-        title: "Nike One Leak Protection: Period",
-        category: "Women's Mid-Rise 18cm (approx.) Biker Shorts",
-        categorySearch: "women",
-        colours: 2,
-        price: 3395,
-        id: 5
-    },
-    {
-        image: "/products/clothes/kalu.webp",
-        title: "Nike Sportswear",
-        category: "Women's Ribbed Jersey Short-Sleeve Top",
-        categorySearch: "women",
-        colours: 2,
-        price: 3295,
-        id: 7
-    },
-    {
-        image: "/products/shoes/shoe1.webp",
-        title: "Nike Air Max Pulse",
-        category: "Women's Shoes",
-        categorySearch: "kids",
-        colours: 2,
-        price: 13995,
-        id: 1
-    },
-]
 
-const mens = [
-    {
-        image: "/products/shoes/shoe2.webp",
-        title: "Nike Air Max 97 SE",
-        category: "Men's Shoes",
-        categorySearch: "women",
-        colours: 2,
-        price: 16995,
-        id: 2
-    },
-    {
-        image: "/products/shoes/jordan.webp",
-        title: "Air Jordan XXXVII Low PF",
-        category: "Men's Basketball Shoes",
-        categorySearch: "men",
-        colours: 1,
-        price: 16295,
-        id: 3
-    },
-    {
-        image: "/products/clothes/neela.webp",
-        title: "Nike Dri-FIT Ready",
-        category: "Men's Short-Sleeve Fitness Top",
-        categorySearch: "men",
-        colours: 3,
-        price: 2495,
-        id: 4
-    },
-]
-
-const Gearup = () => {
+const Gearup = async () => {
+    const womens = await GetProductByCategory("Women's")
+    const mens = await GetProductByCategory("Men' bs")
     return (
         <div className="w-full md:flex items-start md:py-10 gap-8">
             <div className="lg:w-1/2 w-full">

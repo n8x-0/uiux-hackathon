@@ -1,8 +1,9 @@
 import { BsChevronRight, BsChevronLeft } from "react-icons/bs";
-import { productData } from "@/utils/product";
 import Card from "@/components/card";
+import { GetProductData } from "@/sanity/sanity.query";
 
-const Bestofairmax = ({ introTitle, cardSize }: { introTitle?: string, cardSize: "sm" | "lg" }) => {
+const Bestofairmax = async ({ introTitle, cardSize }: { introTitle?: string, cardSize: "sm" | "lg" }) => {
+    const productData = await GetProductData()
     return (
         <div className="w-full py-8">
             <div className="w-full flex justify-between items-center">

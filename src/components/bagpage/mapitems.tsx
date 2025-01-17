@@ -1,20 +1,33 @@
 "use client"
 
-import { productData } from "@/utils/product"
+// import { productData } from "@/utils/product"
 import Image from "next/image"
 import Actionbtns from "./actionbtns"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
+import { GetProductData } from "@/sanity/sanity.query"
+import { Product } from "@/utils/product"
 
-const MapItems = ({ items, storagename, totalState }: { items: number[] | null, storagename: string, totalState?: (value: number | undefined) => void }) => {
-
-    const itemsData = items ? productData.filter((data) => items.includes(data.id)) : null
-    const total = itemsData?.reduce((acc, data) => acc += data.price, 0)
+const MapItems = ({ items, storagename, totalState }: { items: string[] | null, storagename: string, totalState?: (value: number | undefined) => void }) => {
+    const [productData, setProductData] = useState<Product[]>([]);
+    const [itemsData, setItemsData] = useState<Product[] | null>(null);
+    useEffect(() => {
+        const initalizeItems = async () => {
+            const fetchedData = await GetProductData();
+            setProductData(fetchedData);
+        };
+        initalizeItems();
+    }, []);
 
     useEffect(() => {
-        if (totalState) {
-            totalState(total)
+        if (productData.length > 0 && items) {
+            const filteredItems = productData.filter((data) => items.includes(data._id));
+            setItemsData(filteredItems);
+            const total = filteredItems.reduce((acc, data) => acc + data.price, 0);
+            if (totalState) {
+                totalState(total);
+            }
         }
-    }, [itemsData])
+    }, [productData, items]);
 
     return (
         <div className="w-full">
@@ -23,7 +36,7 @@ const MapItems = ({ items, storagename, totalState }: { items: number[] | null, 
                     <div className="w-full flex justify-between items-start py-8 border-b" key={index}>
                         <div className="flex gap-3">
                             <div className="w-36 h-36">
-                                <Image src={data.image} alt="" width={600} height={600} className="w-full h-full object-contain" />
+                                <Image src={data.image.url} alt="" width={600} height={600} className="w-full h-full object-contain" />
                             </div>
                             <div className="text-[#757575] flex flex-col justify-between">
                                 <div>
@@ -36,7 +49,7 @@ const MapItems = ({ items, storagename, totalState }: { items: number[] | null, 
                                     </p>
                                 </div>
                                 <div className="flex items-center gap-3 text-[#111] text-xl">
-                                    <Actionbtns id={data.id} storagename={storagename} />
+                                    <Actionbtns id={data._id} storagename={storagename} />
                                 </div>
                             </div>
                         </div>

@@ -1,37 +1,38 @@
 import Bestofairmax from '@/components/homepage/bestofairmax';
 import Actionbuttons from '@/components/product/productdetails/actionbuttons';
 import StorageProvider from '@/context/storage';
-import { productData } from '@/utils/product';
+import { GetProductById } from '@/sanity/sanity.query';
 import Image from 'next/image';
 import React from 'react'
 
-const PorductDetail = ({ params }: { params: { prodid: number } }) => {
+const PorductDetail = async ({ params }: { params: { prodid: string } }) => {
     const id = params.prodid;
-    const prod = productData.find((data) => data.id.toString() === id.toString())
-
+    const prod = await GetProductById(id)   
+    
+    const {_id, image, title, category, price, description, colors} = prod[0]
     if (prod)
         return (
             <div className='md:px-12 px-3 py-3'>
                 <div className='w-full md:flex text-[#111]'>
                     <div className='flex-1 gap-5 flex flex-wrap'>
                         <div className='w-[46%]'>
-                            <Image src={prod.image} alt="" width={1300} height={700} className="w-full h-full object-cover" />
+                            <Image src={image.url} alt="" width={1300} height={700} className="w-full h-full object-cover" />
                         </div>
                         <div className='w-[46%]'>
-                            <Image src={prod.image} alt="" width={1300} height={700} className="w-full h-full object-cover" />
+                            <Image src={image.url} alt="" width={1300} height={700} className="w-full h-full object-cover" />
                         </div>
                         <div className='w-[46%]'>
-                            <Image src={prod.image} alt="" width={1300} height={700} className="w-full h-full object-cover" />
+                            <Image src={image.url} alt="" width={1300} height={700} className="w-full h-full object-cover" />
                         </div>
                         <div className='w-[46%]'>
-                            <Image src={prod.image} alt="" width={1300} height={700} className="w-full h-full object-cover" />
+                            <Image src={image.url} alt="" width={1300} height={700} className="w-full h-full object-cover" />
                         </div>
                     </div>
 
                     <div className='md:w-[500px] w-full'>
-                        <h1 className='text-2xl font-medium md:mt-0 mt-5'>{prod.title}</h1>
-                        <div className='font-medium'>{prod.category}</div>
-                        <div className='font-medium text-sm mt-3 inline-block'>MRP: ${prod.price}</div>
+                        <h1 className='text-2xl font-medium md:mt-0 mt-5'>{title}</h1>
+                        <div className='font-medium'>{category}</div>
+                        <div className='font-medium text-sm mt-3 inline-block'>MRP: ${price.toLocaleString()}</div>
                         <div className='text-xs text-[#757575]'>inc. of taxes</div>
                         <div className='text-xs text-[#757575]'>(Also includes all applicable duties)</div>
 
@@ -51,15 +52,13 @@ const PorductDetail = ({ params }: { params: { prodid: number } }) => {
                                     })}
                             </div>
                             <StorageProvider>
-                                <Actionbuttons id={prod.id} />
+                                <Actionbuttons id={_id} />
                             </StorageProvider>
                         </div>
                         <div>
-                            <p className='pt-6 text-sm text-[#111] leading-7'>
-                                Layer on style with the Air Max 97. The cracked leather and soft suede update the iconic design while the original look (inspired by Japanese bullet trains and water droplets) still takes centre stage. Easy-to-style colours let you hit the stxreets quickly.
-                            </p>
+                            <p className='pt-6 text-sm text-[#111] leading-7'>{ description}</p>
                             <div className='p-8 text-[#111] '>
-                                Colour Shown: Flat Pewter/Light<br /> Bone/Black/White
+                                Colour Shown: Flat Pewter/Light<br /> {colors.map((clr: string)=> "/"+clr)}
                                 <div>Style: DV7421-001</div>
                             </div>
                             <span className='underline underline-offset-4 font-medium'>view Product details</span>

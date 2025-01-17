@@ -1,11 +1,10 @@
-import React from 'react'
-import { productData } from '@/utils/product';
+import React from 'react';
 import Card from '@/components/card';
+import { GetProductByCategory } from '@/sanity/sanity.query';
 
-const ProdByCategory = ({params}: {params: { category: string }}) => {
+const ProdByCategory = async ({params}: {params: { category: string }}) => {
 
-  const categoty = params.category
-  const filteredItems = productData.filter((data)=> data.categorySearch === categoty)
+ const filteredItems = await GetProductByCategory(params.category)
   
   return (
     <div className='w-full min-h-[50vh] md:px-20 p-3 py-10 flex flex-wrap md:gap-6 gap-4 justify-center'>

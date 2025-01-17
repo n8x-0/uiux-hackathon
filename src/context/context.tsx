@@ -1,11 +1,11 @@
 import React from "react";
 
-interface ContextIface {
-    favitems: number[] | null;
-    bagitems: number[] | null;
-    set: (value: number, storagename: string) => void;
-    delete: (value: number | number[], storagename: string) => void;
-    get: (storagename: string) => number[] | null;
+export interface ContextIface {
+    favitems: string[] | null;
+    bagitems: string[] | null;
+    set: (value: string, storagename: string) => void;
+    delete: (value: string | string[], storagename: string) => void;
+    get: (storagename: string) => string[] | null;
 }
 
 export const storage = React.createContext<ContextIface | undefined>(undefined);
