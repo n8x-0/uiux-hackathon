@@ -40,7 +40,7 @@ const MapItems = ({ items, storagename, totalState }: { items: string[] | null, 
                             </div>
                             <div className="text-[#757575] flex flex-col justify-between">
                                 <div>
-                                    <h3 className="sm:text-lg font-medium text-[#111]">{data.title}</h3>
+                                    <h3 className="sm:text-lg font-medium text-[#111]">{data.productName}</h3>
                                     <p className="sm:text-sm xs:text-xs">Men&apos;s Short-Sleeve Running Top</p>
                                     <p className="sm:text-sm xs:text-xs">Ashen Slate/Cobalt Bliss</p>
                                     <p className="flex gap-10 sm:text-sm xs:text-xs py-1">

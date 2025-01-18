@@ -8,18 +8,19 @@ export async function GET() {
 }
 
 export async function DELETE() {
-    const productsToDelete = await sanityClient.fetch(`*[_type == "product" && defined(ratingCount)]._id`)
+    const productsToDelete = await sanityClient.fetch(`*[_type=="product"]`)
 
     if (productsToDelete.length === 0) {
-        console.log("No products with 'ratingCount' field found.");
+        console.log("No products found.");
         return;
     }
 
     for (const productId of productsToDelete) {
-        await sanityClient.delete(productId);
+        console.log(productId._id);
+        await sanityClient.delete(productId._id);
         console.log(`Deleted product with ID: ${productId}`);
     }
-    console.log("All products with 'ratingCount' field deleted successfully.");
+    console.log("All products deleted successfully.");
 
     return NextResponse.json("success", {status: 200})
 }

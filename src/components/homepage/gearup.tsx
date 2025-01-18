@@ -5,7 +5,7 @@ import { GetProductByCategory } from "@/sanity/sanity.query"
 
 const Gearup = async () => {
     const womens = await GetProductByCategory("Women's")
-    const mens = await GetProductByCategory("Men' bs")
+    const mens = await GetProductByCategory("Men's")
     return (
         <div className="w-full md:flex items-start md:py-10 gap-8">
             <div className="lg:w-1/2 w-full">
@@ -19,7 +19,7 @@ const Gearup = async () => {
                     </div>
                 </div>
                 <div className="w-full h-full flex overflow-x-scroll gap-3">
-                    <Card arr={womens} size="sm" />
+                    <Card arr={mens} size="sm" />
                 </div>
             </div>
             <div className="lg:w-1/2 w-full">
@@ -33,7 +33,7 @@ const Gearup = async () => {
                     </div>
                 </div>
                 <div className="w-full h-full flex overflow-x-scroll gap-3">
-                    <Card arr={mens} size="sm" />
+                    <Card arr={womens} size="sm" />
                 </div>
             </div>
         </div>

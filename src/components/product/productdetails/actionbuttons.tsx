@@ -3,7 +3,7 @@ import { storage } from "@/context/context";
 import { useContext, useState } from "react"
 import { FaCheck } from "react-icons/fa6";
 
-const Actionbuttons = ({ id }: { id: number }) => {
+const Actionbuttons = ({ id }: { id: string }) => {
     const [alredyExistBag, setAlredyExistBag] = useState<string | null>(null);
     const [alredyExistFav, setAlredyExistFav] = useState<string | null>(null);
 

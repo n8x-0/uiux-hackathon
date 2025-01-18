@@ -3,8 +3,6 @@ import { defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
 import { schemas } from "./schema/scema";
 
-const projID = process.env.PUBLIC_SANITY_PROJID as string
-
 export const SanityConfig = defineConfig({
     name: "n8x",
     title: "shop nike",
