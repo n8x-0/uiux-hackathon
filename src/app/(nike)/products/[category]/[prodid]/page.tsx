@@ -1,15 +1,14 @@
 import Bestofairmax from '@/components/homepage/bestofairmax';
 import Actionbuttons from '@/components/product/productdetails/actionbuttons';
-import StorageProvider from '@/context/storage';
 import { GetProductById } from '@/sanity/sanity.query';
 import Image from 'next/image';
 import React from 'react'
 
 const PorductDetail = async ({ params }: { params: { prodid: string } }) => {
     const id = params.prodid;
-    const prod = await GetProductById(id)   
-    
-    const {_id, image, title, category, price, description, colors} = prod[0]
+    const prod = await GetProductById(id)
+
+    const { _id, image, title, category, price, description, colors } = prod[0]
     if (prod)
         return (
             <div className='md:px-12 px-3 py-3'>
@@ -51,14 +50,12 @@ const PorductDetail = async ({ params }: { params: { prodid: string } }) => {
                                         )
                                     })}
                             </div>
-                            <StorageProvider>
-                                <Actionbuttons id={_id} />
-                            </StorageProvider>
+                            <Actionbuttons id={_id} />
                         </div>
                         <div>
-                            <p className='pt-6 text-sm text-[#111] leading-7'>{ description}</p>
+                            <p className='pt-6 text-sm text-[#111] leading-7'>{description}</p>
                             <div className='p-8 text-[#111] '>
-                                Colour Shown: Flat Pewter/Light<br /> {colors.map((clr: string)=> "/"+clr)}
+                                Colour Shown: Flat Pewter/Light<br /> {colors.map((clr: string) => "/" + clr)}
                                 <div>Style: DV7421-001</div>
                             </div>
                             <span className='underline underline-offset-4 font-medium'>view Product details</span>

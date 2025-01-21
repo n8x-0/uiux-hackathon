@@ -5,7 +5,6 @@ import Listtoggle from "./listtoggle";
 import { IoSearch } from "react-icons/io5";
 import Headertop from "./headertop";
 import Likeandbagbuttons from "./likeandbagbuttons";
-import StorageProvider from "@/context/storage";
 
 const routes = [
     {
@@ -53,9 +52,7 @@ const Header = () => {
                             <IoSearch />
                         </div>
                     </div>
-                    <StorageProvider>
-                        <Likeandbagbuttons />
-                    </StorageProvider>
+                    <Likeandbagbuttons />
                     <Listtoggle icon="dots" />
                 </div>
             </div>

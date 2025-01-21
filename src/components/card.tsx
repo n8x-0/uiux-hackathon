@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 const Card = ({ arr, size }: { arr: Product[], size?: "sm" | "lg" }) => {
     return (
-        <>{
+        <>{arr ?
             arr.map((data, index) => {
                 return (
                     <Link key={index} href={`/products/all/${data._id}`}>
@@ -23,7 +23,7 @@ const Card = ({ arr, size }: { arr: Product[], size?: "sm" | "lg" }) => {
                         </div>
                     </Link>
                 )
-            })
+            }) : "Something went wrong"
         }</>
 
     )
