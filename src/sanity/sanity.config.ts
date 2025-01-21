@@ -10,8 +10,8 @@ export const SanityConfig = defineConfig({
     title: "shop nike",
     projectId,
     dataset,
+    token,
     basePath: "/studio",
     plugins: [structureTool(), visionTool()],
     schema: {types: schemas},
-    token
 })

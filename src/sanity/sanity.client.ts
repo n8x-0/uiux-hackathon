@@ -4,7 +4,7 @@ import { dataset, projectId, token } from "./env/initalize";
 const SanityClient: ClientConfig = {
     projectId,
     dataset,
-    useCdn: true,
+    useCdn: false,
     token,
     apiVersion:'2024-12-25',
 }
