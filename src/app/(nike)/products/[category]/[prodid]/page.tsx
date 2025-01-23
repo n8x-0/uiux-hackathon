@@ -1,6 +1,7 @@
 import Bestofairmax from '@/components/homepage/bestofairmax';
 import Actionbuttons from '@/components/product/productdetails/actionbuttons';
 import { GetProductById } from '@/sanity/sanity.query';
+import { SessionProvider } from 'next-auth/react';
 import Image from 'next/image';
 import React from 'react'
 
@@ -50,7 +51,9 @@ const PorductDetail = async ({ params }: { params: { prodid: string } }) => {
                                         )
                                     })}
                             </div>
-                            <Actionbuttons id={_id} />
+                            <SessionProvider>
+                                <Actionbuttons id={_id} />
+                            </SessionProvider>
                         </div>
                         <div>
                             <p className='pt-6 text-sm text-[#111] leading-7'>{description}</p>

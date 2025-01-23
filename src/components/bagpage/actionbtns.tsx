@@ -6,14 +6,14 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { FiHeart } from "react-icons/fi";
 
 
-const Actionbtns = ({ id, storagename }: { id: string, storagename: string }) => {
+const Actionbtns = ({ id, storagename, onDelete }: { id: string, storagename: string, onDelete: (id: string) => void }) => {
     const data = useContext(storage)
     const [LikedItems, setLiked] = useState<boolean>(false)
 
     useEffect(() => {
         likeHandler()
     }, [])
-    
+
     const likeHandler = () => {
         const favorites = data?.get("favitems")
         const liked = favorites?.includes(id) as boolean
@@ -34,7 +34,10 @@ const Actionbtns = ({ id, storagename }: { id: string, storagename: string }) =>
                     }
                 }
             }} />}
-            <AiOutlineDelete onClick={() => data?.delete(id, storagename)} />
+            <AiOutlineDelete onClick={() => {
+                data?.delete(id, storagename)
+                onDelete(id)
+            }} />
         </>
     )
 }

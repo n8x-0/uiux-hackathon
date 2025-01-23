@@ -1,6 +1,61 @@
+"use client"
+import { storage } from "@/context/context";
+import { useContext, useEffect, useState } from "react";
 import { HiOutlineInboxArrowDown } from "react-icons/hi2"
+import { handleCheckoutSubmit } from "@/utils/formhandlers/checkoutformhandler";
+import { CountryCode, countryStates } from "@/utils/countrycodes";
 
 const Formsection = () => {
+    const contApi = useContext(storage);
+    const { productQuantities, bagitems } = contApi!;
+
+    // const [productsList, setProductsList] = useState<Product[] | null>([]);
+    const [totalAmount, setTotalAmount] = useState<number | null>(0);
+
+    const [selectedCountry, setSelectedCountry] = useState<string>("");
+    const [provinces, setProvinces] = useState<{ code: string, name: string }[]>([]);
+    const [selectedProvince, setSelectedProvince] = useState<string>("");
+
+    const [allowSubmit, setAllowSubmit] = useState<boolean>(false);
+    const [error, setError] = useState<Error | null>(null);
+    const [loading, setLoading] = useState<boolean>(false);
+
+    useEffect(() => {
+        const initializeItems = async () => {
+            // if (!bagitems || bagitems.length === 0) {
+            // setProductsList(null)
+            // console.log("No items to fetch.");
+            // return;
+            // }
+
+            if (!productQuantities) {
+                console.log("No product quantities found.");
+                return
+            } else {
+                const totalAmount = productQuantities.reduce((acc, { total }) => acc + total, 0);
+                setTotalAmount(totalAmount)
+            }
+
+            // try {
+            //     const fetchedData = await GetCartProductData({ ids: bagitems as string[] });
+            //     setProductsList(fetchedData);
+            // } catch (error) {
+            //     console.error("Error fetching product data:", error);
+            // }
+        };
+        initializeItems();
+    }, [])
+
+    const handleCountryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const selectedCountry = event.target.value;
+        setSelectedCountry(selectedCountry);
+        if (selectedCountry in countryStates) {
+            setProvinces(countryStates[selectedCountry as CountryCode] || []);
+        } else {
+            setProvinces([]);
+        }
+    };
+
     return (
         <div className="flex-1 md:p-2 lg:px-20">
             <h1 className="text-2xl font-medium py-4">How would you like to get your order?</h1>
@@ -13,17 +68,58 @@ const Formsection = () => {
             </div>
             <h1 className="text-2xl font-medium py-4">Enter your name and address:</h1>
 
-            <form action="" className="space-y-5 border-b pb-12">
-                <input type="text" placeholder="First Name" className="w-full p-4 rounded-lg border-2 placeholder:text-zinc-900" />
-                <input type="text" placeholder="Last Name" className="w-full p-4 rounded-lg border-2 placeholder:text-zinc-900" />
-                <input type="text" placeholder="Address Line 1" className="w-full p-4 rounded-lg border-2 placeholder:text-zinc-900" />
-                <input type="text" placeholder="Address Line 2" className="w-full p-4 rounded-lg border-2 placeholder:text-zinc-900" />
-                <input type="text" placeholder="Address Line 3" className="w-full p-4 rounded-lg border-2 placeholder:text-zinc-900" />
+            <form onSubmit={async (e) => {
+                e.preventDefault()
+                const formData = new FormData(e.target as HTMLFormElement);
+                const data = {
+                    firstname: formData.get("firstname") as string,
+                    lastname: formData.get("lastname") as string,
+                    addresslineone: formData.get("addresslineone") as string,
+                    addresslinetwo: formData.get("addresslinetwo") as string,
+                    addresslinethree: formData.get("addresslinethree") as string,
+                    postalcode: formData.get("postalcode") as string,
+                    locality: formData.get("locality") as string,
+                    state: formData.get("state") as string,
+                    countrycode: formData.get("countrycode") as string,
+                    email: formData.get("email") as string,
+                    phone: formData.get("phone") as string,
+                    pan: formData.get("pan") as string,
+                }
+                try {
+                    await handleCheckoutSubmit(data, productQuantities, bagitems)
+                    setAllowSubmit(true)
+                    setError(null)
+                    setLoading(true)
+                } catch (error) {
+                    console.log(error);
+                    setError(error as Error)
+                }
+            }}
+                className="space-y-5 border-b pb-12">
+                <input type="text" placeholder="First Name*" name="firstname" className="w-full p-4 rounded-lg border-2 placeholder:text-zinc-900" />
+                <input type="text" placeholder="Last Name*" name="lastname" className="w-full p-4 rounded-lg border-2 placeholder:text-zinc-900" />
+                <input type="text" placeholder="Address Line 1*" name="addresslineone" className="w-full p-4 rounded-lg border-2 placeholder:text-zinc-900" />
+                <input type="text" placeholder="Address Line 2" name="addresslinetwo" className="w-full p-4 rounded-lg border-2 placeholder:text-zinc-900" />
+                <input type="text" placeholder="Address Line 3" name="addresslinethree" className="w-full p-4 rounded-lg border-2 placeholder:text-zinc-900" />
                 <div className="grid grid-cols-2 gap-5">
-                    <input type="text" placeholder="Postal Code" className="grid-span-1 w-full p-4 rounded-lg border-2 placeholder:text-zinc-900" />
-                    <input type="text" placeholder="Locality" className="grid-span-1 w-full p-4 rounded-lg border-2 placeholder:text-zinc-900" />
-                    <input type="text" placeholder="State/Territory" className="grid-span-1 w-full p-4 rounded-lg border-2 placeholder:text-zinc-500" />
-                    <input type="text" placeholder="Postal Code" className="grid-span-1 w-full p-4 rounded-lg border-2 placeholder:text-zinc-900" />
+                    <input type="text" placeholder="Postal Code" name="postalcode" className="grid-span-1 w-full p-4 rounded-lg border-2 placeholder:text-zinc-900" />
+                    <input type="text" placeholder="Locality" name="locality" className="grid-span-1 w-full p-4 rounded-lg border-2 placeholder:text-zinc-900" />
+                    <select name="countrycode" className="grid-span-1 w-full p-4 rounded-lg border-2 placeholder:text-zinc-500" onChange={handleCountryChange}
+                    >
+                        <option value="">Country Code</option>
+                        <option value="PK">Pakistan</option>
+                        <option value="US">United States</option>
+                        <option value="CA">Canada</option>
+                        <option value="IN">India</option>
+                    </select>
+                    <select name="state" className="grid-span-1 w-full p-4 rounded-lg border-2 placeholder:text-zinc-500">
+                        <option value="">Select Province/Territory</option>
+                        {provinces.map((province) => (
+                            <option key={province.code} value={province.code}>
+                                {province.name}
+                            </option>
+                        ))}
+                    </select>
                 </div>
                 <div className="space-y-5 py-6">
                     <div className="flex items-center gap-4">
@@ -39,8 +135,8 @@ const Formsection = () => {
                 <h1 className="text-2xl font-medium py-4">What&apos;s your contact information?</h1>
 
                 <div className="space-y-5">
-                    <input type="text" placeholder="Email" className="w-full p-4 rounded-lg border-2 placeholder:text-zinc-900" />
-                    <input type="text" placeholder="Phone Number" className="w-full p-4 rounded-lg border-2 placeholder:text-zinc-900" />
+                    <input type="email" placeholder="Email" name="email" className="w-full p-4 rounded-lg border-2 placeholder:text-zinc-900" />
+                    <input type="phone" placeholder="Phone Number" name="phone" className="w-full p-4 rounded-lg border-2 placeholder:text-zinc-900" />
                 </div>
 
                 <h1 className="text-2xl font-medium py-4">What&apos;s your PAN?</h1>
@@ -60,9 +156,10 @@ const Formsection = () => {
                             <input type="checkbox" className="w-4 h-4" />
                             <span className="text-xs">I have read and consent to eShopWorld processing my information in accordance with the Privacy Statement and Cookie Policy. eShopWorld is a trusted Nike partner.</span>
                         </div>
-                    </div>  
+                    </div>
                 </div>
-                <input type="submit" className="w-full text-center rounded-full py-4 bg-[#F5F5F5] font-medium text-zinc-500"/>
+                <input type="submit" className={`w-full text-center rounded-full py-4 ${allowSubmit ? "bg-[#111] text-white" : "bg-[#F5F5F5] text-zinc-500"} font-medium`} />
+                {error && <p className="text-red-500">{error.message}</p>}
             </form>
 
             <div className="py-5">

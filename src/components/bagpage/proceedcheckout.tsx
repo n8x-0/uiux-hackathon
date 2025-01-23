@@ -1,6 +1,7 @@
 import Link from "next/link"
 
 const Proceedcheckout = ({ total }: { total: number | undefined }) => {
+    
     return (
         <div className="md:w-[420px] w-full md:px-6">
             <h1 className="text-2xl font-medium py-4">Free Delivery</h1>

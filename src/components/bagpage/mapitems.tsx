@@ -2,14 +2,16 @@
 
 import Image from "next/image"
 import Actionbtns from "./actionbtns"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { GetCartProductData } from "@/sanity/sanity.query"
 import { Product } from "@/utils/product"
 import Cartquantitycontroller from "./quantityController"
+import { storage } from "@/context/context"
 
 const MapItems = ({ items, storagename, totalState }: { items: string[] | null, storagename: string, totalState?: (value: number | undefined) => void }) => {
     const [prodcutData, setProductData] = useState<Product[] | null>(null);
-    const [priceQuantities, setPriceQuantities] = useState<{ [id: string]: number }>({});
+    const [priceQuantities, setPriceQuantities] = useState<{id: string, total: number, quantity: number}[] | []>([]);
+    const contApi = useContext(storage);
 
     useEffect(() => {
         const initializeItems = async () => {
@@ -32,16 +34,28 @@ const MapItems = ({ items, storagename, totalState }: { items: string[] | null, 
 
     useEffect(() => {
         if (prodcutData && totalState) {
-            const totalAmount = Object.values(priceQuantities).reduce((acc, curr) => acc + curr, 0);
-            totalState(totalAmount);
+            try {
+                const totalAmount = priceQuantities.reduce((acc, { total }) => acc + total, 0);
+                totalState(totalAmount);
+                contApi?.setProductQuantitiesMethod(priceQuantities)
+            } catch (error) {
+                console.error("Error calculating total amount:", error);
+            }
         }
     }, [priceQuantities, prodcutData, totalState, items]);
 
-    const handlePriceQuantityUpdate = (id: string, total: number) => {
-        setPriceQuantities((prev) => ({
-            ...prev,
-            [id]: total,
-        }));
+    const handlePriceQuantityUpdate = (id: string, total: number, quantity: number) => {
+        setPriceQuantities((prev) => {
+            const updated = prev.filter(item => item.id !== id);
+            return [...updated, { id, total, quantity }];
+        });
+    };
+
+    const handleDeleteItem = (id: string) => {
+        setPriceQuantities((prev) => {
+            const updated = prev.filter(item => item.id !== id);
+            return updated;
+        });
     };
 
     return (
@@ -64,7 +78,7 @@ const MapItems = ({ items, storagename, totalState }: { items: string[] | null, 
                                     </p>
                                 </div>
                                 <div className="flex items-center gap-3 text-[#111] text-xl">
-                                    <Actionbtns id={data._id} storagename={storagename} />
+                                    <Actionbtns id={data._id} storagename={storagename} onDelete={handleDeleteItem} />
                                 </div>
                             </div>
                         </div>
@@ -72,7 +86,7 @@ const MapItems = ({ items, storagename, totalState }: { items: string[] | null, 
                             {storagename === "bagitems" && (
                                 <Cartquantitycontroller
                                     price={data.price}
-                                    priceIntoQuantity={(total) => handlePriceQuantityUpdate(data._id, total)}
+                                    priceIntoQuantity={(total, quantity) => handlePriceQuantityUpdate(data._id, total, quantity)}
                                 />
                             )}
                         </div>

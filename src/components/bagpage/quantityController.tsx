@@ -2,11 +2,11 @@
 import { useEffect, useState } from "react";
 import { FaAngleUp, FaAngleDown } from "react-icons/fa6";
 
-const Cartquantitycontroller = ({ price, priceIntoQuantity }: { price: number, priceIntoQuantity: (value: number) => void }) => {
+const Cartquantitycontroller = ({ price, priceIntoQuantity }: { price: number, priceIntoQuantity: (value: number, quantity: number) => void }) => {
     const [quantity, setQuantity] = useState(1);
 
     useEffect(() => {
-        priceIntoQuantity(price * quantity);
+        priceIntoQuantity(price * quantity, quantity);
     }, [price, quantity]);
 
     return (

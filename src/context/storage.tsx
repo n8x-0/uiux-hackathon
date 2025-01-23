@@ -1,13 +1,14 @@
- "use client";
+"use client";
 
 import React, { useState, useEffect } from "react";
-import { storage } from "./context";
+import { Cart, storage } from "./context";
 import { ContextIface } from "./context";
 
 
 const StorageProvider = ({ children }: { children: React.ReactNode }) => {
     const [favitems, setFavitems] = useState<string[] | null>(null);
     const [bagitems, setBagitems] = useState<string[] | null>(null);
+    const [productQuantities, setProductQuantities] = useState<{id: string, total: number, quantity: number}[] | []>([]);
 
     useEffect(() => {
         if (favitems === null && typeof window !== "undefined") {
@@ -25,27 +26,32 @@ const StorageProvider = ({ children }: { children: React.ReactNode }) => {
             localStorage.setItem("favitems", JSON.stringify(favitems));
         }
     }, [favitems]);
-    
+
     useEffect(() => {
         if (bagitems !== null) {
             localStorage.setItem("bagitems", JSON.stringify(bagitems));
         }
     }, [bagitems]);
-    
+
 
     const context: ContextIface = {
         favitems,
         bagitems,
+        productQuantities,
 
+        setProductQuantitiesMethod: (item) => {
+            setProductQuantities(item);
+        },
+        
         set: (value, storagename) => {
             const updateState = storagename === "favitems" ? setFavitems : setBagitems;
             const currentItems = storagename === "favitems" ? favitems : bagitems;
-            
-            const alreadyAdded = currentItems?.find((data)=> data == value)
-            if(!alreadyAdded){
+
+            const alreadyAdded = currentItems?.find((data) => data == value)
+            if (!alreadyAdded) {
                 const updatedItems = currentItems ? [...currentItems, value] : [value];
                 updateState(updatedItems);
-            }else{
+            } else {
                 throw new Error("Alredy there")
             }
         },
@@ -57,10 +63,10 @@ const StorageProvider = ({ children }: { children: React.ReactNode }) => {
             if (!currentItems) return;
 
             const updatedItems = currentItems.filter((item) => item !== value);
-            if(updatedItems.length >= 0){
-                updateState(updatedItems);            
-            }else{
-                updateState(null);            
+            if (updatedItems.length >= 0) {
+                updateState(updatedItems);
+            } else {
+                updateState(null);
             }
         },
 
