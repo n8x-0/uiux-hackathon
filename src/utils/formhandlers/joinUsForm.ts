@@ -8,7 +8,7 @@ import sanityClient from "@/sanity/sanity.client";
 import { redirect } from "next/navigation";
 
 export const handleJoinUsForm = async (data: User) => {
-    const { email, password, firstname, lastname, dob, country, gender } = data;
+    const { email, password, firstname, lastname, dob, country } = data;
 
     if (!email || !password || !firstname || !lastname || !dob || !country) {
         throw new Error("All fields are required!")
@@ -69,13 +69,14 @@ export const signInHandler = async (formData: FormData) => {
     validateEmail(email)
 
     try {
-        const result = await signIn("credentials", {
+        await signIn("credentials", {
             redirect: false,
             callbackUrl: "/",
             email,
             password
         })
     } catch (error) {
+        console.log(error);
         throw new Error(`Something went wrong!`)
     }
 

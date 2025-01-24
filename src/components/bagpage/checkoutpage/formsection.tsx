@@ -7,18 +7,18 @@ import { CountryCode, countryStates } from "@/utils/countrycodes";
 
 const Formsection = () => {
     const contApi = useContext(storage);
-    const { productQuantities, bagitems } = contApi!;
+    const { productQuantities } = contApi!;
 
     // const [productsList, setProductsList] = useState<Product[] | null>([]);
-    const [totalAmount, setTotalAmount] = useState<number | null>(0);
+    // const [totalAmount, setTotalAmount] = useState<number | null>(0);
 
-    const [selectedCountry, setSelectedCountry] = useState<string>("");
+    // const [selectedCountry, setSelectedCountry] = useState<string>("");
     const [provinces, setProvinces] = useState<{ code: string, name: string }[]>([]);
-    const [selectedProvince, setSelectedProvince] = useState<string>("");
+    // const [selectedProvince, setSelectedProvince] = useState<string>("");
 
     const [allowSubmit, setAllowSubmit] = useState<boolean>(false);
     const [error, setError] = useState<Error | null>(null);
-    const [loading, setLoading] = useState<boolean>(false);
+    // const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
         const initializeItems = async () => {
@@ -32,8 +32,8 @@ const Formsection = () => {
                 console.log("No product quantities found.");
                 return
             } else {
-                const totalAmount = productQuantities.reduce((acc, { total }) => acc + total, 0);
-                setTotalAmount(totalAmount)
+                // const totalAmount = productQuantities.reduce((acc, { total }) => acc + total, 0);
+                // setTotalAmount(totalAmount)
             }
 
             // try {
@@ -48,7 +48,7 @@ const Formsection = () => {
 
     const handleCountryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedCountry = event.target.value;
-        setSelectedCountry(selectedCountry);
+        // setSelectedCountry(selectedCountry);
         if (selectedCountry in countryStates) {
             setProvinces(countryStates[selectedCountry as CountryCode] || []);
         } else {
@@ -86,10 +86,10 @@ const Formsection = () => {
                     pan: formData.get("pan") as string,
                 }
                 try {
-                    await handleCheckoutSubmit(data, productQuantities, bagitems)
+                    await handleCheckoutSubmit(data, productQuantities)
                     setAllowSubmit(true)
                     setError(null)
-                    setLoading(true)
+                    // setLoading(true)
                 } catch (error) {
                     console.log(error);
                     setError(error as Error)

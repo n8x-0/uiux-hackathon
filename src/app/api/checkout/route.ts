@@ -90,7 +90,6 @@ export async function POST(request: NextRequest) {
 
                 console.log("order created and stored", storedOrder); // checkkkkk
 
-                const { labelId, labelDownload, shipmentCost, trackingNumber, trackingStatus } = shipmentDetails
                 return NextResponse.json("shipmentDetails", { status: 200 })
 
             } catch (error) {

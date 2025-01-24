@@ -1,7 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
-import { auth, signOut } from "@/auth"
-import { redirect } from "next/navigation"
+import { auth } from "@/auth"
 import SignOutBtn from "../auth/signoutbtn"
 
 const Headertop = async () => {

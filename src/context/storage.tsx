@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Cart, storage } from "./context";
+import { storage } from "./context";
 import { ContextIface } from "./context";
 
 

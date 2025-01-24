@@ -8,8 +8,9 @@ import { useRouter } from "next/navigation"
 import { useState } from "react"
 
 const SignInComp = () => {
+    const router = useRouter()
     const {data} = useSession()
-    if(data?.user) useRouter().back()
+    if(data?.user) router.back()
     
     const [error, setError] = useState<Error | null>(null)
     const handleSignIn = async (e: React.FormEvent) => {  

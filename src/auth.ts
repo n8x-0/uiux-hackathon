@@ -52,14 +52,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         //     }
         //     return true
         // },
-        async session({token, session, user }) {
+        async session({token, session}) {
             if (token) {
                 session.user.id = token.id as string;
             }
             return session;
         },
         
-        async jwt({ token, user, account, profile }) {
+        async jwt({ token, user }) {
             if (user) {
                 const existingUser = await sanityClient.fetch(`*[_type == "user" && email == $email][0]`, { email: user.email });
                 if (existingUser) {

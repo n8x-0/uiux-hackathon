@@ -1,16 +1,15 @@
 "use server"
 
-import { Cart } from "@/context/context";
 import { CheckoutFormData, ShipToDetails } from "../types";
 import { validateAddressLine, validateCityOrLocality, validateEmail, validatePhoneNumber, validatePostalCode, validateSingleName } from "./validators";
 import { auth } from "@/auth"
 
-export const handleCheckoutSubmit = (data: CheckoutFormData, productQuantities: {id: string, total: number, quantity: number}[] | [], bagitems: string[] | null) => {
+export const handleCheckoutSubmit = (data: CheckoutFormData, productQuantities: {id: string, total: number, quantity: number}[] | []) => {
     if (!productQuantities) {
         throw new Error("No products, please checkout again.")
     }
 
-    const { firstname, lastname, addresslineone, addresslinetwo, addresslinethree, postalcode, locality, state, countrycode, email, phone, pan } = data;
+    const { firstname, lastname, addresslineone, addresslinetwo, addresslinethree, postalcode, locality, state, countrycode, email, phone } = data;
 
 
     if (!firstname || !lastname || !addresslineone || !postalcode || !locality || !state || !countrycode || !email || !phone) {
