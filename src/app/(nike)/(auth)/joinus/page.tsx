@@ -7,28 +7,30 @@ import { validateSingleName } from "@/utils/formhandlers/validators";
 
 const JoinUs = () => {
     const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(false)
     const maleRef = useRef<HTMLInputElement>(null);
     const femaleRef = useRef<HTMLInputElement>(null);
 
     const handleJoinUsFormSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         try {
-        const formData = new FormData(e.target as HTMLFormElement);
-        
-        validateSingleName(formData.get("firstname") as string);
-        validateSingleName(formData.get("lastname") as string);
-        
-        const data = {
-            email: formData.get("email") as string,
-            password: formData.get("password") as string,
-            firstname: formData.get("firstname") as string,
-            lastname: formData.get("lastname") as string,
-            dob: formData.get("dob") as string,
-            country: formData.get("country") as string,
-            gender: formData.get("gender") as string
-        }
+            const formData = new FormData(e.target as HTMLFormElement);
+
+            validateSingleName(formData.get("firstname") as string);
+            validateSingleName(formData.get("lastname") as string);
+
+            const data = {
+                email: formData.get("email") as string,
+                password: formData.get("password") as string,
+                firstname: formData.get("firstname") as string,
+                lastname: formData.get("lastname") as string,
+                dob: formData.get("dob") as string,
+                country: formData.get("country") as string,
+                gender: formData.get("gender") as string
+            }
             await handleJoinUsForm(data)
             setError(null)
+            setLoading(true)
         } catch (error) {
             console.log("joinus route page.tsx: ", error);
             setError(error instanceof Error ? error.message : String(error));
@@ -128,7 +130,7 @@ const JoinUs = () => {
                         type="submit"
                         className="w-full bg-black text-white rounded-md px-4 py-2 text-sm font-semibold focus:outline-none hover:bg-gray-800"
                     >
-                        JOIN US
+                        {loading ? <div className="w-6 h-6 rounded-full border-2 border-t-zinc-500 border-white animate-spin m-auto"></div> : "JOIN US"}
                     </button>
                     {error && <p className="text-red-500 text-sm text-center">{error}</p>}
                 </form>

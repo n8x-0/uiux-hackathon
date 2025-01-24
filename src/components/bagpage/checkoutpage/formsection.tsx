@@ -1,50 +1,19 @@
 "use client"
 import { storage } from "@/context/context";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { HiOutlineInboxArrowDown } from "react-icons/hi2"
 import { handleCheckoutSubmit } from "@/utils/formhandlers/checkoutformhandler";
 import { CountryCode, countryStates } from "@/utils/countrycodes";
+import Link from "next/link";
 
 const Formsection = () => {
     const contApi = useContext(storage);
     const { productQuantities } = contApi!;
 
-    // const [productsList, setProductsList] = useState<Product[] | null>([]);
-    // const [totalAmount, setTotalAmount] = useState<number | null>(0);
-
-    // const [selectedCountry, setSelectedCountry] = useState<string>("");
     const [provinces, setProvinces] = useState<{ code: string, name: string }[]>([]);
-    // const [selectedProvince, setSelectedProvince] = useState<string>("");
-
     const [allowSubmit, setAllowSubmit] = useState<boolean>(false);
     const [error, setError] = useState<Error | null>(null);
-    // const [loading, setLoading] = useState<boolean>(false);
-
-    useEffect(() => {
-        const initializeItems = async () => {
-            // if (!bagitems || bagitems.length === 0) {
-            // setProductsList(null)
-            // console.log("No items to fetch.");
-            // return;
-            // }
-
-            if (!productQuantities) {
-                console.log("No product quantities found.");
-                return
-            } else {
-                // const totalAmount = productQuantities.reduce((acc, { total }) => acc + total, 0);
-                // setTotalAmount(totalAmount)
-            }
-
-            // try {
-            //     const fetchedData = await GetCartProductData({ ids: bagitems as string[] });
-            //     setProductsList(fetchedData);
-            // } catch (error) {
-            //     console.error("Error fetching product data:", error);
-            // }
-        };
-        initializeItems();
-    }, [])
+    const [loading, setLoading] = useState<boolean>(false);
 
     const handleCountryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedCountry = event.target.value;
@@ -89,7 +58,7 @@ const Formsection = () => {
                     await handleCheckoutSubmit(data, productQuantities)
                     setAllowSubmit(true)
                     setError(null)
-                    // setLoading(true)
+                    setLoading(true)
                 } catch (error) {
                     console.log(error);
                     setError(error as Error)
@@ -158,13 +127,15 @@ const Formsection = () => {
                         </div>
                     </div>
                 </div>
-                <input type="submit" className={`w-full text-center rounded-full py-4 ${allowSubmit ? "bg-[#111] text-white" : "bg-[#F5F5F5] text-zinc-500"} font-medium`} />
+                <button type='submit' className={`w-full text-center rounded-full py-4 ${allowSubmit ? "bg-[#111] text-white" : "bg-[#F5F5F5] text-zinc-500"} font-medium`}>
+                    {loading ? <div className="w-6 h-6 rounded-full border-2 border-t-zinc-500 border-white animate-spin m-auto"></div> : "Submit"}
+                </button>
                 {error && <p className="text-red-500">{error.message}</p>}
             </form>
 
             <div className="py-5">
                 <div className="py-5 border-b hover:text-[#111] text-zinc-500 font-medium text-2xl">Delivery</div>
-                <div className="py-5 border-b hover:text-[#111] text-zinc-500 font-medium text-2xl">Shipping</div>
+                <Link href={"/account/myorders"} className="py-5 border-b hover:text-[#111] text-zinc-500 font-medium text-2xl">Shipping</Link>
                 <div className="py-5 border-b hover:text-[#111] text-zinc-500 font-medium text-2xl">Billing</div>
                 <div className="py-5 border-b hover:text-[#111] text-zinc-500 font-medium text-2xl">Payment</div>
             </div>

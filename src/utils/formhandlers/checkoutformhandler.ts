@@ -1,5 +1,6 @@
 "use server"
 
+import { redirect } from "next/navigation";
 import { CheckoutFormData, ShipToDetails } from "../types";
 import { validateAddressLine, validateCityOrLocality, validateEmail, validatePhoneNumber, validatePostalCode, validateSingleName } from "./validators";
 import { auth } from "@/auth"
@@ -49,13 +50,17 @@ const checkOutNow = async (shipTodetails: ShipToDetails, products: {id: string, 
     const currUser = session?.user?.id
 
     try {
-        await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/checkout`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/checkout`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({ shipTodetails, products, currUser })
         })
+        if(res.ok){
+            localStorage.removeItem("bag")
+            redirect("/account/myorders")
+        }
     } catch (error) {
         console.error("Error submitting the form:", error);
     }

@@ -74,7 +74,7 @@ export async function POST(request: NextRequest) {
             try {
                 const storedOrder = await client.create({
                     _type: "order",
-                    customerID: currUser._id,
+                    customerID: currUser,
                     phone: shipTodetails.phone,
                     email: shipTodetails.email,
                     orderData: {
