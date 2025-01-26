@@ -23,11 +23,11 @@ const MemberShipPage = () => {
         </p>
         <Link href={"/joinus"} className='px-6 py-2 bg-[#111111] text-white text-sm rounded-full'>Join Us</Link>
       </div>
-      <Intro data={breakingBarrier}>
+      <Intro introData={breakingBarrier}>
         <Link href={"/products"} className='px-6 py-2 bg-[#111111] text-white text-sm rounded-full'>Download the NRC App</Link>
       </Intro>
 
-      <Intro data={breakingBarrier}>
+      <Intro introData={breakingBarrier}>
         <Link href={"/products"} className='px-6 py-2 bg-[#111111] text-white text-sm rounded-full'>Download the NRC App</Link>
       </Intro>
     </div>

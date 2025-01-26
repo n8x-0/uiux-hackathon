@@ -1,6 +1,6 @@
 import Link from "next/link"
 
-const Proceedcheckout = ({ total }: { total: number | undefined }) => {
+const Proceedcheckout = ({ total, proceed }: { total: number | undefined, proceed: boolean }) => {
     
     return (
         <div className="md:w-[420px] w-full md:px-6">
@@ -19,7 +19,7 @@ const Proceedcheckout = ({ total }: { total: number | undefined }) => {
                     <span>${total}</span>
                 </p>
                 <Link href="/bag/checkout">
-                    <button className='w-full bg-[#111] py-4 text-white rounded-full mt-5'>Member Checkout</button>
+                    <button className={`w-full py-4 rounded-full mt-5 transition-colors duration-300 ${!proceed ? "bg-[#111] text-white": "bg-zinc-200 text-zinc-400 font-medium"}`} disabled={proceed}>Member Checkout</button>
                 </Link>
             </div>
         </div>

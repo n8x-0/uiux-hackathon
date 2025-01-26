@@ -10,7 +10,7 @@ import { storage } from "@/context/context"
 
 const MapItems = ({ items, storagename, totalState }: { items: string[] | null, storagename: string, totalState?: (value: number | undefined) => void }) => {
     const [prodcutData, setProductData] = useState<Product[] | null>(null);
-    const [priceQuantities, setPriceQuantities] = useState<{id: string, total: number, quantity: number}[] | []>([]);
+    const [priceQuantities, setPriceQuantities] = useState<{id: string, total: number, quantity: number, image: string}[] | []>([]);
     const contApi = useContext(storage);
 
     useEffect(() => {
@@ -44,10 +44,10 @@ const MapItems = ({ items, storagename, totalState }: { items: string[] | null, 
         }
     }, [priceQuantities, prodcutData, totalState, items]);
 
-    const handlePriceQuantityUpdate = (id: string, total: number, quantity: number) => {
+    const handlePriceQuantityUpdate = (id: string, total: number, quantity: number, image: string) => {
         setPriceQuantities((prev) => {
             const updated = prev.filter(item => item.id !== id);
-            return [...updated, { id, total, quantity }];
+            return [...updated, { id, total, quantity, image }];
         });
     };
 
@@ -86,7 +86,7 @@ const MapItems = ({ items, storagename, totalState }: { items: string[] | null, 
                             {storagename === "bagitems" && (
                                 <Cartquantitycontroller
                                     price={data.price}
-                                    priceIntoQuantity={(total, quantity) => handlePriceQuantityUpdate(data._id, total, quantity)}
+                                    priceIntoQuantity={(total, quantity) => handlePriceQuantityUpdate(data._id, total, quantity, data.image.url)}
                                 />
                             )}
                         </div>

@@ -11,13 +11,18 @@ const generateDate = (): string => {
 };
 
 export async function POST(request: NextRequest) {
-    const { shipTodetails, products, currUser } = await request.json();
+    const { shipTodetails, productQuantities, currUser } = await request.json();
+
     const currDate = generateDate();
+    productQuantities.forEach((data: { id: string, quantity: number, total: number, value: { amount: number, currency: string }, image:string, countryOfOrigin?: string, description?: string }) => {
+        data.countryOfOrigin = shipTodetails.countryCode
+        data.description = "Nike Shoes or Sports Wear"
+    })
 
     try {
         const shipmentDetails = await shipment.createLabelFromShipmentDetails({
             shipment: {
-                carrierId: "se-1631324",
+                carrierId: process.env.SHIPING_CARRIER_ONE as string,
                 serviceCode: "usps_priority_mail",
                 shipTo: shipTodetails,
                 shipFrom: {
@@ -25,10 +30,10 @@ export async function POST(request: NextRequest) {
                     companyName: "Nike n8x",
                     phone: "+1 555-555-5555",
                     addressLine1: "4301 Bull Creek Rd",
-                    cityLocality: "Austin",
-                    stateProvince: "TX",
-                    postalCode: "78731",
-                    countryCode: "US",
+                    cityLocality: "Karachi",
+                    stateProvince: "SN",
+                    postalCode: "05444",
+                    countryCode: "PK",
                     addressResidentialIndicator: "no"
                 },
                 packages: [
@@ -37,14 +42,24 @@ export async function POST(request: NextRequest) {
                         dimensions: { height: 5, width: 4, length: 10, unit: "inch" },
                     }
                 ],
+                customs: {
+                    nonDelivery: "return_to_sender",
+                    contents: "merchandise",
+                    customsItems: productQuantities,
+                },
                 shipDate: currDate,
             }
         })
 
+        productQuantities.forEach((data: { id: string, quantity: number, total: number, countryOfOrigin?: string, description?: string }) => {
+            delete data.countryOfOrigin
+            delete data.description
+        })
+
         try {
-            const existingCustomer = await client.fetch(`*[_type=="customer" && email=="${shipTodetails.email}"][0]`)
+            const existingCustomer = await client.fetch(`*[_type=="customer" && referecneID=="${currUser}"][0]`)
             const existingUser = await client.fetch(`*[_type=="user" && _id=="${currUser}"][0]`)
-            const previousUserHistory = existingUser.orderHistory || {}
+            const previousUserHistory = existingUser.orderHistory || []
 
             if (!existingCustomer || existingCustomer.length === 0) {
                 const storeCustomer = await client.create({
@@ -53,18 +68,18 @@ export async function POST(request: NextRequest) {
                     phone: shipTodetails.phone,
                     email: shipTodetails.email,
                     referecneID: currUser,
-                    orderHistory: products
+                    orderHistory: productQuantities
                 })
 
-                const updateUserHistory = await client.patch(currUser).set({ orderHistory: [...previousUserHistory, ...products] }).commit()
+                const updateUserHistory = await client.patch(currUser).set({ orderHistory: [...previousUserHistory, ...productQuantities] }).commit()
                 console.log("user history updated", updateUserHistory); // checkkkkk
                 console.log("custoemr created and stored", storeCustomer); // checkkkkk
             } else {
 
-                const customerID = existingCustomer[0]._id
-                const previousHistory = existingCustomer.orderHistory || {}
-                const updateCustomerHistory = await client.patch(customerID).set({ orderHistory: [...previousHistory, ...products] }).commit()
-                const updateUserHistory = await client.patch(currUser).set({ orderHistory: [...previousUserHistory, ...products] }).commit()
+                const customerID = existingCustomer._id
+                const previousHistory = existingCustomer.orderHistory || []
+                const updateCustomerHistory = await client.patch(customerID).set({ orderHistory: [...previousHistory, ...productQuantities] }).commit()
+                const updateUserHistory = await client.patch(currUser).set({ orderHistory: [...previousUserHistory, ...productQuantities] }).commit()
                 console.log("user history updated", updateUserHistory); // checkkkkk
                 console.log("customer history updated", updateCustomerHistory); // checkkkkk
             }
@@ -85,7 +100,7 @@ export async function POST(request: NextRequest) {
                         trackingStatus: shipmentDetails.trackingStatus,
                         shipmentCost: shipmentDetails.shipmentCost,
                     },
-                    packages: products
+                    packages: productQuantities
                 })
 
                 console.log("order created and stored", storedOrder); // checkkkkk
@@ -93,16 +108,22 @@ export async function POST(request: NextRequest) {
                 return NextResponse.json("shipmentDetails", { status: 200 })
 
             } catch (error) {
-                console.log("order creation fail: ", error);
-                return NextResponse.json({ message: `Failed to store customer in sanity` }, { status: 500 })
+                if (error instanceof Error) {
+                    console.log("order creation fail: ", error.message);
+                    return NextResponse.json({ message: `Failed to store customer in sanity`, error: error.message, cause: error.cause }, { status: 500 })
+                }
             }
 
         } catch (error) {
-            console.log("customer creation fail: ", error);
-            return NextResponse.json({ message: `Failed to store customer in sanity` }, { status: 500 })
+            if (error instanceof Error) {
+                console.log("customer creation fail: ", error.message);
+                return NextResponse.json({ message: `Failed to store customer in sanity`, error: error.message, cause: error.cause }, { status: 500 })
+            }
         }
     } catch (error) {
-        console.log("shipmetn label fail: ", error);
-        return NextResponse.json({ message: `Failed to generate label` }, { status: 500 })
+        if (error instanceof Error) {
+            console.log("shipmetn label fail: ", error.message);
+            return NextResponse.json({ message: `Failed to generate label`, error: error.message, cause: error.cause }, { status: 500 })
+        }
     }
 }

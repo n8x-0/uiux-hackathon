@@ -5,6 +5,7 @@ import Listtoggle from "./listtoggle";
 import { IoSearch } from "react-icons/io5";
 import Headertop from "./headertop";
 import Likeandbagbuttons from "./likeandbagbuttons";
+import { SessionProvider } from "next-auth/react";
 
 const routes = [
     {
@@ -53,7 +54,9 @@ const Header = () => {
                         </div>
                     </div>
                     <Likeandbagbuttons />
-                    <Listtoggle icon="dots" />
+                    <SessionProvider>
+                        <Listtoggle icon="dots" />
+                    </SessionProvider>
                 </div>
             </div>
         </>

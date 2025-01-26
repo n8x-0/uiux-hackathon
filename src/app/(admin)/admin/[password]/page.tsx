@@ -47,7 +47,7 @@ const AdminPage = async ({ params }: { params: { password: string } }) => {
                                             </div>
                                         </div>
                                         <div className="flex items-center gap-3">
-                                            <ActionBtns data={data.orderData.label.pdf}/>
+                                            <ActionBtns labelLink={data.orderData.label.pdf}/>
                                             <div className="w-20 h-24 overflow-hidden">
                                                 <img src={data.orderData.label.png} alt="labelimage"/>
                                             </div>

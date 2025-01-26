@@ -5,10 +5,12 @@ import { HiOutlineInboxArrowDown } from "react-icons/hi2"
 import { handleCheckoutSubmit } from "@/utils/formhandlers/checkoutformhandler";
 import { CountryCode, countryStates } from "@/utils/countrycodes";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
-const Formsection = () => {
+const Formsection = ({currUserId}: {currUserId: string | undefined}) => {
     const contApi = useContext(storage);
-    const { productQuantities } = contApi!;
+    const { productQuantities, remove } = contApi!;
+    const router = useRouter()
 
     const [provinces, setProvinces] = useState<{ code: string, name: string }[]>([]);
     const [allowSubmit, setAllowSubmit] = useState<boolean>(false);
@@ -17,13 +19,45 @@ const Formsection = () => {
 
     const handleCountryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedCountry = event.target.value;
-        // setSelectedCountry(selectedCountry);
         if (selectedCountry in countryStates) {
             setProvinces(countryStates[selectedCountry as CountryCode] || []);
         } else {
             setProvinces([]);
         }
     };
+
+    const checkoutHandler = async (e: React.FormEvent) => {
+        e.preventDefault()
+        setLoading(true)
+        const formData = new FormData(e.target as HTMLFormElement);
+        const data = {
+            firstname: formData.get("firstname") as string,
+            lastname: formData.get("lastname") as string,
+            addresslineone: formData.get("addresslineone") as string,
+            addresslinetwo: formData.get("addresslinetwo") as string,
+            addresslinethree: formData.get("addresslinethree") as string,
+            postalcode: formData.get("postalcode") as string,
+            locality: formData.get("locality") as string,
+            state: formData.get("state") as string,
+            countrycode: formData.get("countrycode") as string,
+            email: formData.get("email") as string,
+            phone: formData.get("phone") as string,
+            pan: formData.get("pan") as string,
+        }
+        try {
+            const res = await handleCheckoutSubmit(data, productQuantities)
+            setError(null)
+            if(res == "success"){
+                remove("bagitems")
+                setLoading(false);
+                router.push(`/account/${currUserId}/myorders`)
+            }
+        } catch (error) {
+            console.log(error);
+            setLoading(false)
+            setError(error as Error)
+        }
+    }
 
     return (
         <div className="flex-1 md:p-2 lg:px-20">
@@ -37,35 +71,9 @@ const Formsection = () => {
             </div>
             <h1 className="text-2xl font-medium py-4">Enter your name and address:</h1>
 
-            <form onSubmit={async (e) => {
-                e.preventDefault()
-                const formData = new FormData(e.target as HTMLFormElement);
-                const data = {
-                    firstname: formData.get("firstname") as string,
-                    lastname: formData.get("lastname") as string,
-                    addresslineone: formData.get("addresslineone") as string,
-                    addresslinetwo: formData.get("addresslinetwo") as string,
-                    addresslinethree: formData.get("addresslinethree") as string,
-                    postalcode: formData.get("postalcode") as string,
-                    locality: formData.get("locality") as string,
-                    state: formData.get("state") as string,
-                    countrycode: formData.get("countrycode") as string,
-                    email: formData.get("email") as string,
-                    phone: formData.get("phone") as string,
-                    pan: formData.get("pan") as string,
-                }
-                try {
-                    await handleCheckoutSubmit(data, productQuantities)
-                    setAllowSubmit(true)
-                    setError(null)
-                    setLoading(true)
-                } catch (error) {
-                    console.log(error);
-                    setError(error as Error)
-                }
-            }}
+            <form onSubmit={checkoutHandler}
                 className="space-y-5 border-b pb-12">
-                <input type="text" placeholder="First Name*" name="firstname" className="w-full p-4 rounded-lg border-2 placeholder:text-zinc-900" />
+                <input type="text" placeholder="First Name*" name="firstname" className="w-full p-4 rounded-lg border-2 placeholder:text-zinc-900" onChange={()=> setAllowSubmit(true)}/>
                 <input type="text" placeholder="Last Name*" name="lastname" className="w-full p-4 rounded-lg border-2 placeholder:text-zinc-900" />
                 <input type="text" placeholder="Address Line 1*" name="addresslineone" className="w-full p-4 rounded-lg border-2 placeholder:text-zinc-900" />
                 <input type="text" placeholder="Address Line 2" name="addresslinetwo" className="w-full p-4 rounded-lg border-2 placeholder:text-zinc-900" />
@@ -76,7 +84,6 @@ const Formsection = () => {
                     <select name="countrycode" className="grid-span-1 w-full p-4 rounded-lg border-2 placeholder:text-zinc-500" onChange={handleCountryChange}
                     >
                         <option value="">Country Code</option>
-                        <option value="PK">Pakistan</option>
                         <option value="US">United States</option>
                         <option value="CA">Canada</option>
                         <option value="IN">India</option>
@@ -105,7 +112,7 @@ const Formsection = () => {
 
                 <div className="space-y-5">
                     <input type="email" placeholder="Email" name="email" className="w-full p-4 rounded-lg border-2 placeholder:text-zinc-900" />
-                    <input type="phone" placeholder="Phone Number" name="phone" className="w-full p-4 rounded-lg border-2 placeholder:text-zinc-900" />
+                    <input type="phone" placeholder="Phone Number" name="phone" className="w-full p-4 rounded-lg border-2 placeholder:text-zinc-900"/>
                 </div>
 
                 <h1 className="text-2xl font-medium py-4">What&apos;s your PAN?</h1>
@@ -135,7 +142,7 @@ const Formsection = () => {
 
             <div className="py-5">
                 <div className="py-5 border-b hover:text-[#111] text-zinc-500 font-medium text-2xl">Delivery</div>
-                <Link href={"/account/myorders"} className="py-5 border-b hover:text-[#111] text-zinc-500 font-medium text-2xl">Shipping</Link>
+                <Link href={`/account/${currUserId}/myorders`} className="py-5 border-b hover:text-[#111] text-zinc-500 font-medium text-2xl">Shipping</Link>
                 <div className="py-5 border-b hover:text-[#111] text-zinc-500 font-medium text-2xl">Billing</div>
                 <div className="py-5 border-b hover:text-[#111] text-zinc-500 font-medium text-2xl">Payment</div>
             </div>

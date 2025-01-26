@@ -16,7 +16,7 @@ This project leverages a powerful combination of modern tools and technologies:
 
 ## Features (In Development)
 - **Dynamic Product Listings**: Powered by Sanity CMS, product details can be updated without code changes.
-- **Secure Authentication**: User login and registration functionality powered by Auth.js.
+- **Secure Authentication**: User login and registration functionality powered by Auth.js, securely store password in sanity using bcrypt.
 - **Good Form Sanitation and Validation**: Robust validation implemented for "Join Us," login, and checkout forms to ensure data integrity and security.
 - **Responsive Design**: Built with TailwindCSS to ensure compatibility across devices.
 - **Order Tracking**: Integration with ShipEngine to provide real-time tracking updates.

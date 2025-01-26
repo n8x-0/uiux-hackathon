@@ -8,7 +8,7 @@ import { ContextIface } from "./context";
 const StorageProvider = ({ children }: { children: React.ReactNode }) => {
     const [favitems, setFavitems] = useState<string[] | null>(null);
     const [bagitems, setBagitems] = useState<string[] | null>(null);
-    const [productQuantities, setProductQuantities] = useState<{id: string, total: number, quantity: number}[] | []>([]);
+    const [productQuantities, setProductQuantities] = useState<{id: string, total: number, quantity: number, image: string}[] | []>([]);
 
     useEffect(() => {
         if (favitems === null && typeof window !== "undefined") {
@@ -68,6 +68,11 @@ const StorageProvider = ({ children }: { children: React.ReactNode }) => {
             } else {
                 updateState(null);
             }
+        },
+
+        remove: (storagename) => {
+            localStorage.removeItem(storagename)
+            setBagitems(null)
         },
 
         get: (storagename) => {

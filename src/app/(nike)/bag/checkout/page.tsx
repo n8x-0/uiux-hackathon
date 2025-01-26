@@ -13,7 +13,7 @@ const CheckoutPage = async () => {
                 <div className="md:hidden block">
                     <Ordersummary />
                 </div>
-                <Formsection />
+                <Formsection currUserId={session.user?.id}/>
                 <div className="hidden md:block">
                     <Ordersummary />
                 </div>

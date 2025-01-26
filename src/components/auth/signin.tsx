@@ -9,8 +9,8 @@ import { useState } from "react"
 
 const SignInComp = () => {
     const router = useRouter()
-    const { data } = useSession()
-    if (data?.user) router.back()
+    const session = useSession()
+    if (session.data?.user) router.back()
 
     const [error, setError] = useState<Error | null>(null)
     const [loading, setLoading] = useState<boolean>(false)

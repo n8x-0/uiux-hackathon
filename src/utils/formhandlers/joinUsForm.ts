@@ -7,8 +7,8 @@ import { signIn } from "@/auth";
 import sanityClient from "@/sanity/sanity.client";
 import { redirect } from "next/navigation";
 
-export const handleJoinUsForm = async (data: User) => {
-    const { email, password, firstname, lastname, dob, country } = data;
+export const handleJoinUsForm = async (submitedData: User) => {
+    const { email, password, firstname, lastname, dob, country } = submitedData;
 
     if (!email || !password || !firstname || !lastname || !dob || !country) {
         throw new Error("All fields are required!")
@@ -20,12 +20,12 @@ export const handleJoinUsForm = async (data: User) => {
     validatePassword(password);
     validateDOB(dob);
 
-    data.name = `${firstname} ${lastname}`;
-    delete data.firstname;
-    delete data.lastname;
+    submitedData.name = `${firstname} ${lastname}`;
+    delete submitedData.firstname;
+    delete submitedData.lastname;
 
     const passwordHash = bcrypt.hashSync(password, 10);
-    data.password = passwordHash;
+    submitedData.password = passwordHash;
 
     try {
         const user = await sanityClient.fetch(`*[_type == "user" && email == $email][0]`, { email });
@@ -35,7 +35,7 @@ export const handleJoinUsForm = async (data: User) => {
         }
         await sanityClient.create({
             _type: "user",
-            ...data,
+            ...submitedData,
             orderHistory: []
         })
 

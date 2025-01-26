@@ -5,27 +5,32 @@ import Image from "next/image"
 
 const priorityData = [
   {
+    id:1,
     heading : "Fitness Fit For All",
     para: "Whether you’re just getting started or consider yourself a fitness pro, NIKE provides fitness opportunities and discounts for all levels and goals.",
     image: "/internship/banners/image.png"
   },
   {
+    id:2,
     heading : "Financial Health",
     para: "Whether you’re just getting started or consider yourself a fitness pro, NIKE provides fitness opportunities and discounts for all levels and goals.",
     image: "/internship/banners/health.webp"
   },
   {
+    id:3,
     heading : "REST & RECOVERY",
     para: "Whether you’re just getting started or consider yourself a fitness pro, NIKE provides fitness opportunities and discounts for all levels and goals.",
     image: "/internship/banners/recovery.webp"
   },
   {
+    id:4,
     heading: "Nike Group Insurance Plan",
     para: "Whether you’re just getting started or consider yourself a fitness pro, NIKE provides fitness opportunities and discounts for all levels and goals.",
     btn: "Payment Rates",
     image: "/internship/banners/health.webp"
   },
   {
+    id:5,
     heading : "Fitness Fit For All",
     para: "Whether you’re just getting started or consider yourself a fitness pro, NIKE provides fitness opportunities and discounts for all levels and goals.",
     image: "/internship/banners/image.png"
@@ -41,9 +46,9 @@ const Internship = () => {
         </div>
         <div className="w-full md:space-y-12 space-y-4 py-10 inline-block">
             {
-              priorityData.map((data, index)=> {
+              priorityData.map((data)=> {
                 return(
-                  <div key={index} className="w-full relative flex justify-center items-center">
+                  <div key={data.id} className="w-full relative flex justify-center items-center">
                       {data.image && <Image src={data.image} alt="" width={600} height={600} className="w-full h-full object-contain -z-10"/>}
                       <div className="w-full flex justify-center items-center flex-col md:gap-5 gap-2 z-10 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
                         <h1 className="lg:text-4xl text-2xl tracking-tight font-medium">{data.heading}</h1>

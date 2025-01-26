@@ -28,19 +28,19 @@ export default function Home() {
   return (
     <div className="max-w-[1344px] m-auto px-3 text-[#111]">
       <Downloadappbanner />
-      <Intro data={intro}>
+      <Intro introData={intro}>
         <Link href={"/"} className='px-6 py-2 bg-[#111111] text-white text-sm rounded-full'>Notify Me</Link>
         <Link href={"/products"} className='px-6 py-2 bg-[#111111] text-white text-sm rounded-full'>Shop Air Max</Link>
       </Intro>
       <Bestofairmax introTitle="Best Of Air Max" cardSize="lg"/>
       <p className="text-2xl font-medium py-4">Featured</p>
-      <Intro data={featuredArr}>
+      <Intro introData={featuredArr}>
         <Link href={"/products"} className='px-6 py-2 bg-[#111111] text-white text-sm rounded-full'>Find Your Shoe</Link>
       </Intro>
       <p className="text-2xl font-medium py-4">Gear Up</p>
       <Gearup />
       <p className="text-2xl font-medium py-4">Don&apos;s Miss</p>
-      <Intro data={dontMisspage}>
+      <Intro introData={dontMisspage}>
         <Link href={"/products"} className='px-6 py-2 bg-[#111111] text-white text-sm rounded-full'>Shop</Link>
       </Intro>  
       <p className="text-2xl font-medium py-4">The Essentials</p>

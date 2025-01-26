@@ -21,11 +21,11 @@ const Ordersummary = () => {
                 return;
             }
 
-            if(!productQuantities){
+            if (!productQuantities) {
                 console.log("No product quantities found.");
                 return
-            }else{
-                const totalAmount = productQuantities.reduce((acc, { total }) => acc + total, 0);                
+            } else {
+                const totalAmount = productQuantities.reduce((acc, { total }) => acc + total, 0);
                 setTotalAmount(totalAmount)
             }
 
@@ -38,8 +38,7 @@ const Ordersummary = () => {
         };
         initializeItems();
     }, [])
-    console.log(productQuantities, "Ordersummary");
-    
+
     return (
         <div className="md:w-[420px] w-full md:px-6">
             <h1 className="text-2xl font-medium py-4">Order Summary</h1>
@@ -59,7 +58,7 @@ const Ordersummary = () => {
             </div>
             <p className="text-xs text-[#757575]">(The total reflects the price of your order, including all duties and taxes)</p>
             <div className="py-6 space-y-3">
-                {!productsList ? <p>-</p> :
+                {!productsList ? <p className="text-red-600">No products, please checkout again.*</p> :
                     productsList.map((data, index) => {
                         return (
                             <div key={index} className="flex gap-2 items-start">
@@ -70,7 +69,7 @@ const Ordersummary = () => {
                                     <p className="text-[#111]">{data.productName}</p>
                                     <p className="sm:text-sm xs:text-xs">Men&apos;s Short-Sleeve Running Top</p>
                                     <p className="sm:text-sm xs:text-xs">Ashen Slate/Cobalt Bliss</p>
-                                    <span className="text-sm">${data.price} x{productQuantities.filter((prod)=> {return prod.id == data._id})[0].quantity}</span>
+                                    {productQuantities && <span className="text-sm">${data.price} x{productQuantities.filter((prod) => { return prod.id == data._id })[0].quantity}</span>}
                                 </div>
                             </div>
                         )

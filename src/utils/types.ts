@@ -55,6 +55,7 @@ export type PackagesT = {
   quantity: number;
   id: string;
   total: number;
+  image: string
 }[];
 
 export type OrderT = {

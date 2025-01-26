@@ -3,37 +3,38 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { useState } from "react";
 import Listroutes from "./listroutes";
 import Image from "next/image";
-
-const routes = [
-    {
-        name: "Products",
-        route: "/products"
-    },
-    {
-        name: "My Orders",
-        route: "/account/myorders"
-    },
-    {
-        name: "Internship",
-        route: "/internship"
-    },
-    {
-        name: "Membership",
-        route: "/membership"
-    },
-    {
-        name: "Sale",
-        route: "/products/sale"
-    },
-    {
-        name: "SNKRS",
-        route: "/feed"
-    },
-]
+import { useSession } from "next-auth/react";
 
 const Listtoggle = ({ icon }: { icon: "window" | "dots" }) => {
+    const session = useSession();
     const [activeNavList, setActiveNavList] = useState(false)
 
+    const routes = [
+        {
+            name: "Products",
+            route: "/products"
+        },
+        {
+            name: "My Orders",
+            route: `/account/${session.data?.user?.id}/myorders`
+        },
+        {
+            name: "Order History",
+            route: `/account/${session.data?.user?.id}/orderhistory`
+        },
+        {
+            name: "Internship",
+            route: "/internship"
+        },
+        {
+            name: "Membership",
+            route: "/membership"
+        },
+        {
+            name: "SNKRS",
+            route: "/feed"
+        },
+    ]
     return (
         <div className="flex gap-1">
             {icon === "dots" ?
