@@ -2,14 +2,9 @@ import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs"
 import sanityClient from "./sanity/sanity.client"
-import GoogleProvider from "next-auth/providers/google"
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
     providers: [
-        GoogleProvider({
-            clientId: process.env.GOOGLE_CLIENT_ID,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET
-        }),
         Credentials({
             credentials: {
                 email: { label: "Email", type: "email" },
