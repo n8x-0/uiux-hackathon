@@ -1,7 +1,6 @@
 "use server"
 
 import bcrypt from "bcryptjs";
-import { validateDOB, validateEmail, validatePassword, validateSingleName } from "./validators";
 import { User } from "../types";
 import { signIn } from "@/auth";
 import sanityClient from "@/sanity/sanity.client";
@@ -67,7 +66,9 @@ export const signInHandler = async (formData: { email: string, password: string 
             password
         })
     } catch (error) {
-        throw new Error("Invalid credentials!")
+        if (error) {
+            throw new Error("Invalid credentials!")
+        }
     }
 
     redirect("/bag")
