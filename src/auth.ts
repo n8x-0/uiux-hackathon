@@ -17,14 +17,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 const isMatch = bcrypt.compareSync(password as string, user.password)
                 
                 if (!user || !isMatch) {
-                    return null
+                    throw new Error("Invalid Credentials!")
                 }
                 return user;
-            },
-        }),
+            }
+        })
     ],
 
-    callbacks: {    
+    callbacks: {
         async session({token, session}) {
             if (token) {
                 session.user.id = token.id as string;

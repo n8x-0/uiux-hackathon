@@ -26,6 +26,7 @@ export const handleJoinUsForm = async (submitedData: User) => {
         if (user) {
             throw new Error("Email already exists!")
         }
+
         await sanityClient.create({
             _type: "user",
             ...submitedData,
@@ -33,17 +34,20 @@ export const handleJoinUsForm = async (submitedData: User) => {
         })
 
         try {
-            await signIn("credentials", {
+            const res = await signIn("credentials", {
                 redirect: false,
                 callbackUrl: "/",
                 email,
                 password
             })
+            if (!res || res.error) {
+                throw new Error("Something went wrong!")
+            }
         } catch (error) {
-            console.error("Error creating user:", error)
-            throw new Error("Error signing in")
+            if (error) {
+                throw new Error("Something went wrong!")
+            }
         }
-
     } catch (error) {
         console.error("Error creating user:", error)
         throw new Error("Error signing up")
@@ -60,16 +64,19 @@ export const signInHandler = async (formData: { email: string, password: string 
     }
 
     try {
-        await signIn("credentials", {
+        const res = await signIn("credentials", {
             redirect: false,
+            callbackUrl: "/",
             email,
             password
         })
+        if (!res || res.error) {
+            throw new Error("Invalid Credentials")
+        }
     } catch (error) {
         if (error) {
-            throw new Error("Invalid credentials!")
+            throw new Error("Invalid Credentials")
         }
     }
-
     redirect("/bag")
 }
