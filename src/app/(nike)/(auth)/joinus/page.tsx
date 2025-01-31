@@ -3,36 +3,55 @@ import Link from "next/link";
 import Image from "next/image";
 import { handleJoinUsForm } from "@/utils/formhandlers/joinUsForm";
 import { useRef, useState } from "react";
-import { validateSingleName } from "@/utils/formhandlers/validators";
+import { validateDOB, validateEmail, validatePassword, validateSingleName } from "@/utils/formhandlers/validators";
 
 const JoinUs = () => {
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false)
     const maleRef = useRef<HTMLInputElement>(null);
     const femaleRef = useRef<HTMLInputElement>(null);
+    const [formdata, setFormData] = useState({
+        email: "",
+        password: "",
+        firstname: "",
+        lastname: "",
+        dob: "",
+        country: "",
+        gender: ""
+    })
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const { name, value } = e.target
+
+        try {
+            if (name === "firstname" || name === "lastname") {
+                validateSingleName(value)
+            } else if (name === "email") {
+                validateEmail(value)
+            } else if (name === "password") {
+                validatePassword(value)
+            } else if (name === "dob") {
+                validateDOB(value)
+            }
+            setError(null)
+        } catch (error) {
+            setError(error instanceof Error ? error.message : String(error))
+        }
+
+        setFormData({
+            ...formdata,
+            [name]: value
+        });
+    }
 
     const handleJoinUsFormSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
+        setLoading(true)
         try {
-            const formData = new FormData(e.target as HTMLFormElement);
-
-            validateSingleName(formData.get("firstname") as string);
-            validateSingleName(formData.get("lastname") as string);
-
-            const data = {
-                email: formData.get("email") as string,
-                password: formData.get("password") as string,
-                firstname: formData.get("firstname") as string,
-                lastname: formData.get("lastname") as string,
-                dob: formData.get("dob") as string,
-                country: formData.get("country") as string,
-                gender: formData.get("gender") as string
-            }
-            await handleJoinUsForm(data)
+            await handleJoinUsForm(formdata)
             setError(null)
-            setLoading(true)
         } catch (error) {
-            console.log("joinus route page.tsx: ", error);
+            setLoading(false)
             setError(error instanceof Error ? error.message : String(error));
         }
     }
@@ -49,24 +68,32 @@ const JoinUs = () => {
                 </p>
                 <form className="mt-6 space-y-4" onSubmit={handleJoinUsFormSubmit}>
                     <input
+                        onChange={handleChange}
+                        value={formdata.email}
                         name="email"
                         type="email"
                         placeholder="Email address"
                         className="w-full border border-gray-300 rounded-md px-4 py-2 text-sm focus:ring-2 focus:ring-black focus:outline-none"
                     />
                     <input
+                        onChange={handleChange}
+                        value={formdata.password}
                         name="password"
                         type="password"
                         placeholder="Password"
                         className="w-full border border-gray-300 rounded-md px-4 py-2 text-sm focus:ring-2 focus:ring-black focus:outline-none"
                     />
                     <input
+                        onChange={handleChange}
+                        value={formdata.firstname}
                         name="firstname"
                         type="text"
                         placeholder="First Name"
                         className="w-full border border-gray-300 rounded-md px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black"
                     />
                     <input
+                        onChange={handleChange}
+                        value={formdata.lastname}
                         name="lastname"
                         type="text"
                         placeholder="Last Name"
@@ -74,6 +101,8 @@ const JoinUs = () => {
                     />
                     <div>
                         <input
+                            onChange={handleChange}
+                            value={formdata.dob}
                             name="dob"
                             type="date"
                             className="w-full border border-gray-300 rounded-md px-4 py-2 text-sm focus:ring-2 focus:ring-black focus:outline-none"
@@ -83,6 +112,7 @@ const JoinUs = () => {
                         </p>
                     </div>
                     <select
+                        onChange={handleChange}
                         name="country"
                         className="w-full border border-gray-300 rounded-md px-4 py-2 text-sm text-gray-700 focus:ring-2 focus:ring-black focus:outline-none"
                     >
@@ -92,8 +122,10 @@ const JoinUs = () => {
                         <option value={"UK"}>UK</option>
                     </select>
                     <div className="flex gap-4">
-                        <input type="radio" name="gender" id="abcd" value={"male"} ref={maleRef} className="hidden" />
-                        <input type="radio" name="gender" id="efgh" value={"female"} ref={femaleRef} className="hidden" />
+                        <input
+                            onChange={handleChange} type="radio" name="gender" id="abcd" value={"male"} ref={maleRef} className="hidden" />
+                        <input
+                            onChange={handleChange} type="radio" name="gender" id="efgh" value={"female"} ref={femaleRef} className="hidden" />
                         <button onClick={() => { maleRef.current?.click() }}
                             type="button"
                             className="flex-1 border border-gray-300 rounded-md px-4 py-2 text-sm focus:outline-none focus:bg-gray-200"
@@ -127,8 +159,9 @@ const JoinUs = () => {
                         </Link>.
                     </p>
                     <button
+                        disabled={error ? true : false}
                         type="submit"
-                        className="w-full bg-black text-white rounded-md px-4 py-2 text-sm font-semibold focus:outline-none hover:bg-gray-800"
+                        className={`w-full ${error ? "bg-zinc-200 text-zinc-400" : "bg-black text-white"} rounded-md px-4 py-2 text-sm font-semibold focus:outline-none ${!error && "hover:bg-gray-800"}`}
                     >
                         {loading ? <div className="w-6 h-6 rounded-full border-2 border-t-zinc-500 border-white animate-spin m-auto"></div> : "JOIN US"}
                     </button>

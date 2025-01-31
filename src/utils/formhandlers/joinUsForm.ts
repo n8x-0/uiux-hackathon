@@ -14,12 +14,6 @@ export const handleJoinUsForm = async (submitedData: User) => {
         throw new Error("All fields are required!")
     }
 
-    validateSingleName(firstname);
-    validateSingleName(lastname);
-    validateEmail(email);
-    validatePassword(password);
-    validateDOB(dob);
-
     submitedData.name = `${firstname} ${lastname}`;
     delete submitedData.firstname;
     delete submitedData.lastname;
@@ -59,25 +53,21 @@ export const handleJoinUsForm = async (submitedData: User) => {
     redirect("/bag")
 }
 
-export const signInHandler = async (formData: FormData) => {
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
+export const signInHandler = async (formData: { email: string, password: string }) => {
+    const { email, password } = formData
 
     if (!email || !password) {
         throw new Error("All fields are required !")
     }
-    validateEmail(email)
 
     try {
         await signIn("credentials", {
             redirect: false,
-            callbackUrl: "/",
             email,
             password
         })
     } catch (error) {
-        console.log(error);
-        throw new Error(`Something went wrong!`)
+        throw new Error("Invalid credentials!")
     }
 
     redirect("/bag")

@@ -15,38 +15,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
                 const user = await sanityClient.fetch(`*[_type == "user" && email == $email][0]`, { email });
                 const isMatch = bcrypt.compareSync(password as string, user.password)
-
+                
                 if (!user || !isMatch) {
-                    throw new Error("Invalid cerdentials!")
+                    return null
                 }
                 return user;
             },
         }),
     ],
 
-    callbacks: {
-        // async signIn({ user, account, profile }) {
-        //     if (account?.provider === "google") {
-        //         const existingUser = await sanityClient.fetch(`*[_type == "user" && email == $email][0]`, { email: user.email });
-        //         if (!existingUser) {
-        //             try {
-        //                 const createdUser = await sanityClient.create({
-        //                     _type: "user",
-        //                     name: user.name,
-        //                     email: user.email,
-        //                     dob: user.dob,
-        //                     country: user.country,
-        //                     gender: user.gender,
-        //                     orderHistory: []
-        //                 })
-        //             } catch (error) {
-        //                 console.error("Error creating user:", error)
-        //                 throw new Error("Error signing in")
-        //             }
-        //         }
-        //     }
-        //     return true
-        // },
+    callbacks: {    
         async session({token, session}) {
             if (token) {
                 session.user.id = token.id as string;
