@@ -62,7 +62,7 @@ const JoinUs = () => {
                 body: JSON.stringify(formdata),
             })
             const data = await res.json()
-
+            
             if (res.ok) {
                 await signIn("credentials", {
                     redirect: false,
@@ -70,8 +70,9 @@ const JoinUs = () => {
                     email,
                     password
                 })
+                setLoading(true)
                 setError(null)
-                router.forward()
+                router.push("/bag")
             }
             throw new Error(data.message);
         } catch (error) {

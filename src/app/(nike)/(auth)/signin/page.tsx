@@ -51,11 +51,12 @@ const SignInPage = () => {
                 email,
                 password
             })
+            setLoading(true)
             if(!res || res?.error){
                 throw new Error("Invalid Credentials")
             }
             setError(null)
-            router.forward()
+            router.push("/bag")
         } catch (error) {
             setLoading(false)
             setError(error instanceof Error ? error.message : String(error));
