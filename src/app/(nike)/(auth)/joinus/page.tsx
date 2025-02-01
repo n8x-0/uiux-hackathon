@@ -1,11 +1,13 @@
 "use client"
 import Link from "next/link";
 import Image from "next/image";
-import { handleJoinUsForm } from "@/utils/formhandlers/joinUsForm";
 import { useRef, useState } from "react";
 import { validateDOB, validateEmail, validatePassword, validateSingleName } from "@/utils/formhandlers/validators";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const JoinUs = () => {
+    const router = useRouter()
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false)
     const maleRef = useRef<HTMLInputElement>(null);
@@ -16,7 +18,7 @@ const JoinUs = () => {
         firstname: "",
         lastname: "",
         dob: "",
-        country: "",
+        country: "PK",
         gender: ""
     })
 
@@ -47,10 +49,33 @@ const JoinUs = () => {
     const handleJoinUsFormSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         setLoading(true)
+        const { email, password, firstname, lastname, dob, country } = formdata;
         try {
-            await handleJoinUsForm(formdata)
-            setError(null)
+            if (!email || !password || !firstname || !lastname || !dob || !country) {
+                throw new Error("All fields are required!")
+            }
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/register`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(formdata),
+            })
+            const data = await res.json()
+
+            if (res.ok) {
+                await signIn("credentials", {
+                    redirect: false,
+                    redirectTo: "/",
+                    email,
+                    password
+                })
+                setError(null)
+                router.forward()
+            }
+            throw new Error(data.message);
         } catch (error) {
+            console.log(error);
             setLoading(false)
             setError(error instanceof Error ? error.message : String(error));
         }

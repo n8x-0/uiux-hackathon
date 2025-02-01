@@ -14,10 +14,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 const { email, password } = credentials;
 
                 const user = await sanityClient.fetch(`*[_type == "user" && email == $email][0]`, { email });
-                const isMatch = bcrypt.compareSync(password as string, user.password)
-                
+                const isMatch = bcrypt.compareSync(password as string, user.password);
+
                 if (!user || !isMatch) {
-                    throw new Error("Invalid Credentials!")
+                    return null
                 }
                 return user;
             }
@@ -25,21 +25,41 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     ],
 
     callbacks: {
-        async session({token, session}) {
+        async signIn({ user, account }) {
+            if (account?.provider === "google") {
+                const existingUser = await sanityClient.fetch(`*[_type == "user" && email == $email][0]`, { email: user.email });
+
+                if (!existingUser) {
+                    await sanityClient.create({
+                        _type: "user",
+                        name: user.name,
+                        email: user.email,
+                        image: user.image,
+                        orderHistory: []
+                    })
+                }
+            }
+            return true
+        },
+
+        async session({ session, token, }) {
             if (token) {
                 session.user.id = token.id as string;
             }
             return session;
         },
-        
+
         async jwt({ token, user }) {
             if (user) {
                 const existingUser = await sanityClient.fetch(`*[_type == "user" && email == $email][0]`, { email: user.email });
                 if (existingUser) {
-                  token.id = existingUser._id.toString();
+                    token.id = existingUser._id.toString();
                 }
-              }
-              return token;
+            }
+            return token;
         }
+    },
+    pages: {
+        signIn: '/signin',
     }
 })
