@@ -47,10 +47,10 @@ const SignInPage = () => {
                 password
             })
 
-            if (res?.ok) {
-                router.push("/account")
+            if (res?.error) {
+                throw new Error(res?.code)
             }
-            throw new Error("Invalid Credentials")
+            router.push("/account")
         } catch (error) {
             setLoading(false)
             setError(error instanceof Error ? error.message : String(error));
@@ -93,6 +93,14 @@ const SignInPage = () => {
                     </button>
                     {error && <p className="text-red-500">{error}</p>}
                 </form>
+                <button
+                    onClick={async () => await signIn("google")}
+                    className={`w-full text-black bg-white border border-black py-3 flex items-center justify-center gap-4`}>
+                    <div className="w-6 h-6">
+                        <Image src={"/icons/googleicon.png"} alt="google icon" width={400} height={400} className="w-full h-full object-cover" />
+                    </div>
+                    Sign In with Google
+                </button>
                 <p className="text-[#8D8D8D]">Not a memeber? <Link href="/joinus" className="underline text-[#111]">Join Us</Link></p>
             </div>
         </div>

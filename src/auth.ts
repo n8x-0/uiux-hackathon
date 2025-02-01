@@ -1,10 +1,20 @@
-import NextAuth from "next-auth"
+import NextAuth, { CredentialsSignin } from "next-auth"
 import Credentials from "next-auth/providers/credentials";
+import Google from "next-auth/providers/google";
 import bcrypt from "bcryptjs"
 import sanityClient from "./sanity/sanity.client"
 
+
+class InvalidCredErr extends CredentialsSignin {
+    code = "Invalid Credentials!"
+}
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
     providers: [
+        Google({
+            clientId: process.env.AUTH_GOOGLE_ID,
+            clientSecret: process.env.AUTH_GOOGLE_SECRET
+        }),
         Credentials({
             credentials: {
                 email: { label: "Email", type: "email" },
@@ -17,7 +27,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 const isMatch = bcrypt.compareSync(password as string, user.password);
 
                 if (!user || !isMatch) {
-                    return null
+                    throw new InvalidCredErr()
                 }
                 return user;
             }
@@ -61,5 +71,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
     pages: {
         signIn: '/signin',
-    }
+    },
+
+    session: {
+        strategy: "jwt"
+    },
 })

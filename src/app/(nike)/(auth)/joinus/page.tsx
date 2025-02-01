@@ -67,11 +67,10 @@ const JoinUs = () => {
                     email,
                     password
                 })
-                if(res?.ok){
-                    router.push("/account")
-                    return
+                if (res?.error) {
+                    throw new Error("Something went wrong!")
                 }
-                throw new Error("Something went wrong!")
+                router.push("/account")
             }
             throw new Error(data.message)
         } catch (error) {
@@ -192,6 +191,14 @@ const JoinUs = () => {
                     </button>
                     {error && <p className="text-red-500 text-sm text-center">{error}</p>}
                 </form>
+                <button
+                    onClick={async () => await signIn("google")}
+                    className={`w-full text-black bg-white border border-black py-3 flex items-center justify-center gap-4`}>
+                    <div className="w-6 h-6">
+                        <Image src={"/icons/googleicon.png"} alt="google icon" width={400} height={400} className="w-full h-full object-cover" />
+                    </div>
+                    Sign In with Google
+                </button>
                 <p className="text-sm text-center text-gray-600 mt-6">
                     Already a Member?&nbsp;
                     <Link href="/signin" className="underline">

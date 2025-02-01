@@ -1,46 +1,36 @@
-import { getToken } from "next-auth/jwt";
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import { auth } from "./auth";
 
-export async function middleware(req: NextRequest) {
-  // Retrieve the token (if any) from cookies using your AUTH_SECRET
-  const token = await getToken({ req, secret: process.env.AUTH_SECRET });
-  const { pathname } = req.nextUrl;
+const protectedRoutes = [
+  "/bag",
+  "/bag/checkout",
+  "/account",
+  "/account/:path*"
+];
 
-  // Define your protected routes
-  const protectedRoutes = [
-    "/bag",
-    "/bag/checkout",
-    "/account",
-    "/account/(.*)/myorders",
-    "/account/(.*)/orderhistory",
-    "/account/(.*)/myorders/(.*)",
-  ];
+export default auth(async (req) => {
+  const isLoggedIn = !!req.auth
+  const { nextUrl } = req
+  const url = process.env.NEXT_PUBLIC_BASE_URL
 
-  // Check if the current request pathname matches any protected route
-  const isProtectedRoute = protectedRoutes.some((route) => {
-    const regex = new RegExp(`^${route.replace(/\(\.\*\)/g, "[^/]+")}$`);
-    return regex.test(pathname);
-  });
+  const isPrivateRoute = protectedRoutes.includes(nextUrl.pathname)
+  const isAuthRoute = nextUrl.pathname.includes("/auth")
+  const isApiRoute = nextUrl.pathname.includes("/api")
 
-  // If the route is protected and no token is found, redirect to /signin
-  if (isProtectedRoute && !token) {
-    return NextResponse.redirect(new URL("/signin", req.url));
+  if (isApiRoute) return
+
+  if (isLoggedIn && isAuthRoute) {
+    return Response.redirect(`${url}/account`)
   }
+  if (isAuthRoute && !isLoggedIn) return
 
-  // If user is already authenticated and tries to visit the signin page, redirect to dashboard
-  if (pathname === "/signin" && token) {
-    return NextResponse.redirect(new URL("/dashboard", req.url));
+  if (!isLoggedIn && isPrivateRoute) {
+    return Response.redirect(`${url}/signin`)
   }
+})
 
-  return NextResponse.next();
-}
-
-// Apply middleware to desired routes
 export const config = {
   matcher: [
-    "/bag",
-    "/bag/checkout",
     "/account/:path*",
+    "/((?!api|_next/static|_next/image|favicon.ico).*)"
   ],
 };

@@ -3,10 +3,11 @@ import Link from "next/link";
 import { auth } from "@/auth";
 import { BsArrowRight, BsCart2, BsHeart } from "react-icons/bs";
 import SignOutBtn from "@/components/auth/signoutbtn";
+import Image from "next/image";
 
 const Account = async () => {
     const session = await auth()
-    
+
     async function fetchUserData() {
         try {
             const userData = await sanityClient.fetch(
@@ -24,12 +25,16 @@ const Account = async () => {
             {/* Header */}
             <div className="flex items-center justify-between pb-4 border-b">
                 <div className="flex items-center space-x-4">
-                    {user?.profileImage ? (
-                        <img
-                            src={user.profileImage}
-                            alt="User Avatar"
-                            className="w-14 h-14 rounded-full object-cover"
-                        />
+                    {user?.image ? (
+                        <div className="w-14 h-14 bg-gray-300 rounded-full flex items-center justify-center">
+                            <Image
+                                src={user.image}
+                                alt="User Avatar"
+                                width={600}
+                                height={600}
+                                className="w-14 h-14 rounded-full object-cover"
+                            />
+                        </div>
                     ) : (
                         <div className="w-14 h-14 bg-gray-300 rounded-full flex items-center justify-center">
                             <span className="text-xl font-semibold text-gray-600">
