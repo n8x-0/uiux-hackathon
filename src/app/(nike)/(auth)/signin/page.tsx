@@ -1,6 +1,7 @@
 "use client"
 
 import { validateEmail } from "@/utils/formhandlers/validators"
+import { signIn } from "next-auth/react"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -37,21 +38,19 @@ const SignInPage = () => {
     const handleSignIn = async (e: React.FormEvent) => {
         e.preventDefault()
         setLoading(true)
-        const { email, password } = formdata;
+        const { email, password } = formdata
         try {
-            if (!email || !password) {
-                throw new Error("All fields are required!")
-            }
-            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/signin`, {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(formdata)
+            const res = await signIn("credentials", {
+                redirect: false,
+                redirectTo: "/account",
+                email,
+                password
             })
-            const data = await res.json()
-            if(res.ok){
+
+            if (res?.ok) {
                 router.push("/account")
             }
-            throw new Error(data.message)
+            throw new Error("Invalid Credentials")
         } catch (error) {
             setLoading(false)
             setError(error instanceof Error ? error.message : String(error));

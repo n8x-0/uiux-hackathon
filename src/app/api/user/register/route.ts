@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs"
 import sanityClient from "@/sanity/sanity.client";
-import { signIn } from "@/auth";
 
 export async function POST(request: NextRequest) {
 
@@ -28,14 +27,8 @@ export async function POST(request: NextRequest) {
             orderHistory: []
         })
 
-        const res = await signIn("credentials", {
-            redirect: false,
-            redirectTo: "/account",
-            email,
-            password
-        })
-
-        return NextResponse.json({newUser, res}, { status: 200 })
+        
+        return NextResponse.json(newUser, { status: 200 })
     } catch (error) {
         console.error("Error creating user:", error)
         return NextResponse.json({message: error}, { status: 500 })

@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 import { validateDOB, validateEmail, validatePassword, validateSingleName } from "@/utils/formhandlers/validators";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 const JoinUs = () => {
     const router = useRouter()
@@ -55,12 +56,22 @@ const JoinUs = () => {
             }
             const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/register`, {
                 method: "POST",
-                headers: {"Content-Type": "application/json"},
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formdata)
             })
             const data = await res.json()
-            if(res.ok){
-                router.push("/account")
+            if (res.ok) {
+                const res = await signIn("credentials", {
+                    redirect: false,
+                    redirectTo: "/account",
+                    email,
+                    password
+                })
+                if(res?.ok){
+                    router.push("/account")
+                    return
+                }
+                throw new Error("Something went wrong!")
             }
             throw new Error(data.message)
         } catch (error) {
