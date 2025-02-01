@@ -1,25 +1,20 @@
-import { auth } from "@/auth";
 import sanityClient from "@/sanity/sanity.client";
 import { OrderT } from "@/utils/types";
 import Image from "next/image";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
-const MyOrders = async () => {
-    const session = await auth()
-    if (!session) redirect("/joinus")        
+const MyOrders = async ({params}: {params: {userid: string}}) => {
 
     const query = `
     *[_type=="order" && customerID==$id]
     `
-    const myorders = await sanityClient.fetch(query, { id: session.user?.id })
-    console.log("order:  ", myorders);
+    const myorders = await sanityClient.fetch(query, { id: params.userid })
 
     return (
-        <div className="w-full lg:p-12 p-3 h-full">
+        <div className="w-full lg:p-12 p-3 min-h-[80vh]">
             <h1 className="text-2xl font-medium w-full border-b py-2">My Orders.</h1>
-            <div className="h-full">
-                {
+            <div className="w-full">
+                {myorders && myorders.length > 0 ?
                     myorders.map((data: OrderT, index: number) => {
                         const { packages, orderData, _createdAt, _updatedAt } = data
                         return (
@@ -80,11 +75,15 @@ const MyOrders = async () => {
                                 </div>
 
                                 <div className="text-sm mt-3 col-span-1 flex justify-end">
-                                    <Link href={`/account/${session.user?.id}/myorders/${orderData.labelID}`} className="px-8 py-2 h-fit w-fit bg-blue-950 text-white rounded font-medium">Track order</Link>
+                                    <Link href={`/account/${params.userid}/myorders/${orderData.labelID}`} className="px-8 py-2 h-fit w-fit bg-blue-950 text-white rounded font-medium">Track order</Link>
                                 </div>
                             </div>
                         )
                     })
+                    : 
+                    <div className="w-full min-h-[80vh] flex justify-center items-center">
+                    <p className="text-gray-500 text-lg animate-bounce duration-1000">No Orders yet</p>
+                    </div>
                 }
             </div>
         </div>

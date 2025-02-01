@@ -11,8 +11,8 @@ const Listtoggle = ({ icon }: { icon: "window" | "dots" }) => {
 
     const routes = [
         {
-            name: "Products",
-            route: "/products"
+            name: "Account",
+            route: "/account"
         },
         {
             name: "My Orders",
@@ -21,6 +21,10 @@ const Listtoggle = ({ icon }: { icon: "window" | "dots" }) => {
         {
             name: "Order History",
             route: `/account/${session.data?.user?.id}/orderhistory`
+        },
+        {
+            name: "Products",
+            route: "/products"
         },
         {
             name: "Internship",

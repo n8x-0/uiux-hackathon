@@ -2,13 +2,10 @@
 
 import { CheckoutFormData, ShipToDetails } from "../types";
 import { validateAddressLine, validateCityOrLocality, validateEmail, validatePhoneNumber, validateSingleName } from "./validators";
-import { auth } from "@/auth"
 import { shipment } from "@/shipengine/config";
 import { Params } from "shipengine/esm/validate-addresses/types/public-params";
 
-export const handleCheckoutSubmit = async (submitedData: CheckoutFormData, productQuantities: { id: string, total: number, quantity: number, image:string }[] | []) => {
-    const session = await auth();
-    const currUser = session?.user?.id
+export const handleCheckoutSubmit = async (submitedData: CheckoutFormData, productQuantities: { id: string, total: number, quantity: number, image:string }[] | [], currUser: string | undefined) => {
 
     if (!productQuantities || productQuantities.length == 0) {
         throw new Error("No products, please checkout again.")
@@ -24,7 +21,6 @@ export const handleCheckoutSubmit = async (submitedData: CheckoutFormData, produ
     validateSingleName(firstname as string);
     validateSingleName(lastname as string);
     validateAddressLine(addresslineone as string);
-    // validatePostalCode(postalcode as string);
     validateCityOrLocality(locality as string);
     validateEmail(email as string);
     validatePhoneNumber(phone as string);

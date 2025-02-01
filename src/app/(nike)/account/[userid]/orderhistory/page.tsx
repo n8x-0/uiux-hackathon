@@ -13,8 +13,8 @@ const OrderHistory = async ({ params }: { params: { userid: string } }) => {
 
   if (!user) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <p className="text-gray-500 text-lg">User not found</p>
+      <div className="flex items-center justify-center h-[80vh]">
+        <p className="text-gray-500 text-lg animate-bounce duration-1000">User not found</p>
       </div>
     );
   }
@@ -22,7 +22,7 @@ const OrderHistory = async ({ params }: { params: { userid: string } }) => {
   const { name, email, orderHistory } = user;
 
   return (
-    <div className="min-h-screen bg-gray-100 md:p-6 p-3">
+    <div className="min-h-[80vh] bg-gray-100 md:p-6 p-3">
       <div className="max-w-4xl mx-auto bg-white md:p-6 p-4 shadow-lg rounded-xl">
         <h1 className="text-2xl font-semibold mb-4">Order History</h1>
 
@@ -61,7 +61,7 @@ const OrderHistory = async ({ params }: { params: { userid: string } }) => {
               ))}
             </div>
           ) : (
-            <p className="text-gray-500">No orders found.</p>
+            <p className="text-gray-500 animate-bounce duration-1000">No orders found.</p>
           )}
         </div>
       </div>

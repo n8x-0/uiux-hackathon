@@ -45,7 +45,7 @@ const Formsection = ({currUserId}: {currUserId: string | undefined}) => {
             pan: formData.get("pan") as string,
         }
         try {
-            const res = await handleCheckoutSubmit(data, productQuantities)
+            const res = await handleCheckoutSubmit(data, productQuantities, currUserId)
             setError(null)
             if(res == "success"){
                 remove("bagitems")

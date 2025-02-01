@@ -3,7 +3,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import { validateDOB, validateEmail, validatePassword, validateSingleName } from "@/utils/formhandlers/validators";
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 const JoinUs = () => {
@@ -56,25 +55,14 @@ const JoinUs = () => {
             }
             const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/register`, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(formdata),
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(formdata)
             })
             const data = await res.json()
-            
-            if (res.ok) {
-                await signIn("credentials", {
-                    redirect: false,
-                    redirectTo: "/",
-                    email,
-                    password
-                })
-                setLoading(true)
-                setError(null)
-                router.push("/bag")
+            if(res.ok){
+                router.push("/account")
             }
-            throw new Error(data.message);
+            throw new Error(data.message)
         } catch (error) {
             console.log(error);
             setLoading(false)
