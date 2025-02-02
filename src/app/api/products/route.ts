@@ -2,7 +2,7 @@ import sanityClient from "@/sanity/sanity.client";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
-    const data = await sanityClient.fetch(`*[_type=="user"]`)
+    const data = await sanityClient.fetch(`*[_type=="order"]`)
 
     return NextResponse.json(data, { status: 200 })
 }

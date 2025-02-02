@@ -40,20 +40,25 @@ const SignInPage = () => {
         setLoading(true)
         const { email, password } = formdata
         try {
+            if (!email || !password) {
+                throw new Error("All fields are required!")
+            }
             const res = await signIn("credentials", {
                 redirect: false,
                 redirectTo: "/account",
                 email,
                 password
             })
-
             if (res?.error) {
                 throw new Error(res?.code)
+            }else{
+                router.push("/account")
             }
-            router.push("/account")
         } catch (error) {
             setLoading(false)
             setError(error instanceof Error ? error.message : String(error));
+        }finally{
+            setLoading(false)
         }
     }
 

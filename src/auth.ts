@@ -8,6 +8,12 @@ import sanityClient from "./sanity/sanity.client"
 class InvalidCredErr extends CredentialsSignin {
     code = "Invalid Credentials!"
 }
+class NoUserFound extends CredentialsSignin{
+    code = "Invalid Credentials, Please creaete account first."
+}
+class EmailUseByGoogleSignIn extends CredentialsSignin{
+    code = "This email is used with google sign in."
+}
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
     providers: [
@@ -24,9 +30,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 const { email, password } = credentials;
 
                 const user = await sanityClient.fetch(`*[_type == "user" && email == $email][0]`, { email });
+                if(user && user.provider === "google"){
+                    throw new EmailUseByGoogleSignIn()
+                }
+                if(!user){
+                    throw new NoUserFound()
+                }
                 const isMatch = bcrypt.compareSync(password as string, user.password);
-
-                if (!user || !isMatch) {
+                if (!isMatch) {
                     throw new InvalidCredErr()
                 }
                 return user;
@@ -42,6 +53,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 if (!existingUser) {
                     await sanityClient.create({
                         _type: "user",
+                        provider: "google",
                         name: user.name,
                         email: user.email,
                         image: user.image,

@@ -13,6 +13,7 @@ export async function POST(request: NextRequest) {
 
     const passwordHash = bcrypt.hashSync(password, 10);
     formdata.password = passwordHash;
+    formdata.provider = "credentials"
 
     try {
         const user = await sanityClient.fetch(`*[_type == "user" && email == $email][0]`, { email });

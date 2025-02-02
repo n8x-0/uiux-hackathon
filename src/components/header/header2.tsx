@@ -5,7 +5,6 @@ import Listroutes from "./listroutes"
 import Link from "next/link"
 import { FaLocationDot } from "react-icons/fa6";
 import Listtoggle from "./listtoggle";
-import { auth } from "@/auth";
 
 const routes = [
     {
@@ -23,7 +22,6 @@ const routes = [
 ]
 
 const Header2 = async () => {
-    const session = await auth()
     return (
         <>
             <div className="w-full sm:px-10 px-2 py-2 bg-[#F5F5F5] text-[#757575] flex justify-between items-center">
@@ -48,7 +46,7 @@ const Header2 = async () => {
                 <div className="gap-6 items-center font-medium text-sm lg:flex hidden">
                     <Listroutes routes={routes} />
                 </div>
-                <Listtoggle icon="window" userid={session?.user?.id} />
+                <Listtoggle icon="window" />
             </div>
         </>
     )

@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
     const { shipTodetails, productQuantities, currUser } = await request.json();
 
     const currDate = generateDate();
-    productQuantities.forEach((data: { id: string, quantity: number, total: number, value: { amount: number, currency: string }, image:string, countryOfOrigin?: string, description?: string }) => {
+    productQuantities.forEach((data: { id: string, quantity: number, total: number, value: { amount: number, currency: string }, image: string, countryOfOrigin?: string, description?: string }) => {
         data.countryOfOrigin = shipTodetails.countryCode
         data.description = "Nike Shoes or Sports Wear"
     })
@@ -57,35 +57,13 @@ export async function POST(request: NextRequest) {
         })
 
         try {
-            const existingCustomer = await client.fetch(`*[_type=="customer" && referecneID=="${currUser}"][0]`)
+
             const existingUser = await client.fetch(`*[_type=="user" && _id=="${currUser}"][0]`)
             const previousUserHistory = existingUser.orderHistory || []
-
-            if (!existingCustomer || existingCustomer.length === 0) {
-                const storeCustomer = await client.create({
-                    _type: "customer",
-                    name: shipTodetails.name,
-                    phone: shipTodetails.phone,
-                    email: shipTodetails.email,
-                    referecneID: currUser,
-                    orderHistory: productQuantities
-                })
-
-                const updateUserHistory = await client.patch(currUser).set({ orderHistory: [...previousUserHistory, ...productQuantities] }).commit()
-                console.log("user history updated", updateUserHistory); // checkkkkk
-                console.log("custoemr created and stored", storeCustomer); // checkkkkk
-            } else {
-
-                const customerID = existingCustomer._id
-                const previousHistory = existingCustomer.orderHistory || []
-                const updateCustomerHistory = await client.patch(customerID).set({ orderHistory: [...previousHistory, ...productQuantities] }).commit()
-                const updateUserHistory = await client.patch(currUser).set({ orderHistory: [...previousUserHistory, ...productQuantities] }).commit()
-                console.log("user history updated", updateUserHistory); // checkkkkk
-                console.log("customer history updated", updateCustomerHistory); // checkkkkk
-            }
-
+            const updateUserHistory = await client.patch(currUser).set({ orderHistory: [...previousUserHistory, ...productQuantities] }).commit()
+            console.log("user history updated", updateUserHistory); // checkkkkk
+            
             // store order in sanity
-
             try {
                 const storedOrder = await client.create({
                     _type: "order",

@@ -3,10 +3,12 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { useState } from "react";
 import Listroutes from "./listroutes";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 
-const Listtoggle = ({ icon, userid }: { icon: "window" | "dots" , userid: string | undefined}) => {
+const Listtoggle = ({ icon }: { icon: "window" | "dots"}) => {
     const [activeNavList, setActiveNavList] = useState(false)
-
+    const {data: session} = useSession()
+    const userid = session?.user?.id
     const routes = [
         {
             name: "Account",

@@ -60,23 +60,28 @@ const JoinUs = () => {
                 body: JSON.stringify(formdata)
             })
             const data = await res.json()
-            if (res.ok) {
-                const res = await signIn("credentials", {
-                    redirect: false,
-                    redirectTo: "/account",
-                    email,
-                    password
-                })
-                if (res?.error) {
-                    throw new Error("Something went wrong!")
-                }
-                router.push("/account")
+
+            if (!res.ok) {
+                throw new Error(data.message)
             }
-            throw new Error(data.message)
+
+            await new Promise((resolve) => setTimeout(resolve, 500));
+
+            const signInRes = await signIn("credentials", {
+                redirect: false,
+                email,
+                password
+            })
+            if (signInRes?.error) {
+                throw new Error("Something went wrong!")
+            }
+            router.push("/account")
         } catch (error) {
             console.log(error);
             setLoading(false)
             setError(error instanceof Error ? error.message : String(error));
+        }finally{
+            setLoading(false)
         }
     }
 
