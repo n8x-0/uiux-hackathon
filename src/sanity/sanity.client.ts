@@ -4,7 +4,7 @@ import { dataset, projectId, token } from "./env/initalize";
 const client: ClientConfig = {
     projectId,
     dataset,
-    useCdn: false,
+    useCdn: true,
     token,
     apiVersion:'2024-12-25',
 }
