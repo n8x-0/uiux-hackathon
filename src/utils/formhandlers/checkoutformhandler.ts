@@ -1,11 +1,14 @@
 "use server"
-
 import { CheckoutFormData, ShipToDetails } from "../types";
 import { validateAddressLine, validateCityOrLocality, validateEmail, validatePhoneNumber, validateSingleName } from "./validators";
 import { shipment } from "@/shipengine/config";
 import { Params } from "shipengine/esm/validate-addresses/types/public-params";
 
-export const handleCheckoutSubmit = async (submitedData: CheckoutFormData, productQuantities: { id: string, total: number, quantity: number, image:string }[] | [], currUser: string | undefined) => {
+export const handleCheckoutSubmit = async (
+    submitedData: CheckoutFormData,
+    productQuantities: { id: string, total: number, quantity: number, image: string }[] | [],
+    currUser: string | undefined
+) => {
 
     if (!productQuantities || productQuantities.length == 0) {
         throw new Error("No products, please checkout again.")
@@ -15,7 +18,10 @@ export const handleCheckoutSubmit = async (submitedData: CheckoutFormData, produ
 
 
     if (!firstname || !lastname || !addresslineone || !postalcode || !locality || !state || !countrycode || !email || !phone) {
-        throw new Error("Please fill all the required fields.")
+        return {
+            error: "error",
+            message: "Please fill all the required fields."
+        }
     }
 
     validateSingleName(firstname as string);
@@ -39,6 +45,16 @@ export const handleCheckoutSubmit = async (submitedData: CheckoutFormData, produ
         addressResidentialIndicator: "yes"
     }
 
+    const validateAdd = await shipment.validateAddresses([shipTodetails])
+
+
+    if (validateAdd[0].messages[0].type === "error") {
+        return {
+            error: "error",
+            message: validateAdd[0].messages[0].message
+        }
+    }
+
     if (!addresslinetwo) delete shipTodetails.addressLine2;
     if (!addresslinethree) delete shipTodetails.addressLine3;
 
@@ -53,14 +69,20 @@ export const handleCheckoutSubmit = async (submitedData: CheckoutFormData, produ
             },
             body: JSON.stringify({ shipTodetails, productQuantities, currUser })
         })
-        if(!res.ok){
+        if (!res.ok) {
             const error = await res.json()
-            throw new Error(error.error)
+            return {
+                error: "error",
+                message: error.error
+            }
         }
-        return "success"
+        
     } catch (error) {
-        if(error instanceof Error){
-            throw new Error(error.message as string)    
+        if (error instanceof Error) {
+            return {
+                error: "error",
+                message: error.message
+            }
         }
     }
 }

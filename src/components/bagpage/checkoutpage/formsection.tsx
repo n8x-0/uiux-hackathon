@@ -7,14 +7,14 @@ import { CountryCode, countryStates } from "@/utils/countrycodes";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-const Formsection = ({currUserId}: {currUserId: string | undefined}) => {
+const Formsection = ({ currUserId }: { currUserId: string | undefined }) => {
     const contApi = useContext(storage);
     const { productQuantities, remove } = contApi!;
     const router = useRouter()
 
     const [provinces, setProvinces] = useState<{ code: string, name: string }[]>([]);
     const [allowSubmit, setAllowSubmit] = useState<boolean>(false);
-    const [error, setError] = useState<Error | null>(null);
+    const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
 
     const handleCountryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -39,7 +39,7 @@ const Formsection = ({currUserId}: {currUserId: string | undefined}) => {
             postalcode: formData.get("postalcode") as string,
             locality: formData.get("locality") as string,
             state: formData.get("state") as string,
-            countrycode: formData.get("countrycode") as string,
+            countrycode: formData.get("countrycode") as CountryCode,
             email: formData.get("email") as string,
             phone: formData.get("phone") as string,
             pan: formData.get("pan") as string,
@@ -47,15 +47,18 @@ const Formsection = ({currUserId}: {currUserId: string | undefined}) => {
         try {
             const res = await handleCheckoutSubmit(data, productQuantities, currUserId)
             setError(null)
-            if(res == "success"){
+            if (res?.error) {
+                throw new Error(res.message)
+            } else {
                 remove("bagitems")
                 setLoading(false);
                 router.push(`/account/${currUserId}/myorders`)
             }
         } catch (error) {
-            console.log(error);
-            setLoading(false)
-            setError(error as Error)
+            if(error instanceof Error){
+                setLoading(false)
+                setError(error.message)
+            }
         }
     }
 
@@ -73,7 +76,7 @@ const Formsection = ({currUserId}: {currUserId: string | undefined}) => {
 
             <form onSubmit={checkoutHandler}
                 className="space-y-5 border-b pb-12">
-                <input type="text" placeholder="First Name*" name="firstname" className="w-full p-4 rounded-lg border-2 placeholder:text-zinc-900" onChange={()=> setAllowSubmit(true)}/>
+                <input type="text" placeholder="First Name*" name="firstname" className="w-full p-4 rounded-lg border-2 placeholder:text-zinc-900" onChange={() => setAllowSubmit(true)} />
                 <input type="text" placeholder="Last Name*" name="lastname" className="w-full p-4 rounded-lg border-2 placeholder:text-zinc-900" />
                 <input type="text" placeholder="Address Line 1*" name="addresslineone" className="w-full p-4 rounded-lg border-2 placeholder:text-zinc-900" />
                 <input type="text" placeholder="Address Line 2" name="addresslinetwo" className="w-full p-4 rounded-lg border-2 placeholder:text-zinc-900" />
@@ -112,7 +115,7 @@ const Formsection = ({currUserId}: {currUserId: string | undefined}) => {
 
                 <div className="space-y-5">
                     <input type="email" placeholder="Email" name="email" className="w-full p-4 rounded-lg border-2 placeholder:text-zinc-900" />
-                    <input type="phone" placeholder="Phone Number" name="phone" className="w-full p-4 rounded-lg border-2 placeholder:text-zinc-900"/>
+                    <input type="phone" placeholder="Phone Number" name="phone" className="w-full p-4 rounded-lg border-2 placeholder:text-zinc-900" />
                 </div>
 
                 <h1 className="text-2xl font-medium py-4">What&apos;s your PAN?</h1>
@@ -137,7 +140,7 @@ const Formsection = ({currUserId}: {currUserId: string | undefined}) => {
                 <button type='submit' className={`w-full text-center rounded-full py-4 ${allowSubmit ? "bg-[#111] text-white" : "bg-[#F5F5F5] text-zinc-500"} font-medium`}>
                     {loading ? <div className="w-6 h-6 rounded-full border-2 border-t-zinc-500 border-white animate-spin m-auto"></div> : "Submit"}
                 </button>
-                {error && <p className="text-red-500">{error.message}</p>}
+                {error && <p className="text-red-500">{error}</p>}
             </form>
 
             <div className="py-5">

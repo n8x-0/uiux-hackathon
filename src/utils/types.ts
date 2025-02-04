@@ -1,3 +1,5 @@
+import { CountryCode } from "./countrycodes";
+
 export type ShipToDetails = {
   name: string;
   phone: string;
@@ -8,8 +10,8 @@ export type ShipToDetails = {
   cityLocality: string;
   stateProvince: string;
   postalCode: string;
-  countryCode: string;
-  addressResidentialIndicator: string;
+  countryCode: CountryCode;
+  addressResidentialIndicator: "yes" | "no" | "unknown";
 };
 
 export type PackageTemplate = {
@@ -45,7 +47,7 @@ export type CheckoutFormData = {
   postalcode: string;
   locality: string;
   state: string;
-  countrycode: string;
+  countrycode: CountryCode;
   email: string;
   phone: string;
   pan: string;

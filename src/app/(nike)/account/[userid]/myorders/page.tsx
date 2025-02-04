@@ -1,14 +1,15 @@
-import sanityClient from "@/sanity/sanity.client";
 import { OrderT } from "@/utils/types";
 import Image from "next/image";
 import Link from "next/link";
 
 const MyOrders = async ({params}: {params: {userid: string}}) => {
 
-    const query = `
-    *[_type=="order" && customerID==$id]
-    `
-    const myorders = await sanityClient.fetch(query, { id: params.userid })
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/orders?userid=${params.userid}`, {
+        method: "GET",
+        headers: {"Content-Type": "application/json"},
+        cache: "no-store"
+    })
+    const myorders = await res.json()
 
     return (
         <div className="w-full lg:p-12 p-3 min-h-[80vh]">
